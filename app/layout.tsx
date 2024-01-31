@@ -11,6 +11,7 @@ const robotoGoogle = Roboto({
 
 import Header from '@/components/Header'
 import { robotoRegular } from '@/public/fonts'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'next-auth',
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${robotoRegular} ${robotoGoogle.variable} bg-dark-gray`}>
         <Header></Header>
         {children}
+        <Footer></Footer>
       </body>
     </html>
   )
