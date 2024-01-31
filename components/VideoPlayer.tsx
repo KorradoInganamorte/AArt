@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { getFromStorage, setToStorage } from '@/lib/localStorage';
-const VideoTool = dynamic(() => import("@/components/VideoTool"))
+import VideoTool from './VideoTool';
 
 const VideoPlayer = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
