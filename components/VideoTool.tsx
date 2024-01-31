@@ -59,7 +59,7 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
     if (currentTimeLineRef.current) {
       currentTimeLineRef.current.style.width = `${currentWidth}%`
     }
-  }, [currentTime])
+  }, [videoRef.current?.currentTime])
 
   // console.log(isHiddenInterface)
   
@@ -78,7 +78,7 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
           
           <div className='flex items-center mr-[2.4rem]'>
             <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="" />
-            
+            <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 
           <p className={`${robotoMedium} text-lg text-white`}>{currentTime} / {duration}</p>
