@@ -164,7 +164,7 @@ const VideoPlayer = () => {
   return (
     <div tabIndex={0} ref={containerRef} onTouchMove={checkIsHiddenInterface} onTouchStart={toggleIsHiddenInterfaceMobile} onMouseMove={hideInterface} onMouseLeave={checkIsHiddenInterface} onKeyDown={keyDownEvent}>
       <video onClick={handlePlayPause} className='w-[100%] h-[82vh] bg-black' ref={videoRef} src="video/evangelion.short.mp4"></video>
-      <div ref={iconMessagePlayPause} className='absolute top-[40vh] left-[45vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity'><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/PLay.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>
+      <div ref={iconMessagePlayPause} className='absolute top-[40vh] left-[45vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity'><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>
       {videoRef.current && containerRef.current ? (
         <VideoTool isHiddenInterface={isHiddenInterface} isPlayed={isPlayed} currentWidth={currentWidth} currentTime={currentTime} duration={duration} videoRef={videoRef} formatTime={formatTime} handlePlayPause={handlePlayPause} handleFullScreenChange={handleFullScreenChange}></VideoTool>
       ) : (
