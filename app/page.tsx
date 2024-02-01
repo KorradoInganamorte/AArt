@@ -1,5 +1,76 @@
+"use client"
+
 import FilterBtn from "@/UI/FilterBtn"
 import Card from "@/components/Card"
+
+const PhoneComponent = () => {
+  return (
+    <div>
+      <h1>VerticalPhoneComponent</h1>
+    </div>
+  );
+};
+
+const VerticalPhoneComponent = () => {
+  return (
+    <div>
+      <h1>VerticalPhoneComponent</h1>
+    </div>
+  );
+};
+
+const HorizontalPhoneComponent = () => {
+  return (
+    <div>
+      <h1>HorizontalPhoneComponent</h1>
+    </div>
+  );
+};
+
+const TabletComponent = () => {
+  return (
+    <div>
+      <h1>TabletComponent</h1>
+    </div>
+  );
+};
+
+const LaptopSMComponent = () => {
+  return (
+    <div>
+      <h1>LaptopSMComponent</h1>
+    </div>
+  );
+};
+
+const LaptopComponent = () => {
+  return (
+    <div>
+      <h1>LaptopComponent</h1>
+    </div>
+  );
+};
+
+const MonitorComponent = () => {
+  return (
+    <div>
+      <h1>MonitorComponent</h1>
+    </div>
+  );
+};
+
+const ScreenComponent = () => {
+  return (
+    <div>
+      <h1>ScreenComponent</h1>
+    </div>
+  );
+};
+
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  return { width, height };
+};
 
 export default function Home() {
   const lists = ["Все", "В тренде", "Новые"]
@@ -34,7 +105,7 @@ export default function Home() {
 
   return (
     <div className="container_page">
-      <div className="mb-[2rem] mt-[1.2rem]"><FilterBtn lists={lists} /></div>
+      <div className="mb-[.8rem] verticalphone:mb-[2rem] mt-[1.2rem]"><FilterBtn lists={lists} /></div>
 
       <div className="film-layout">
         {animePannels.map((pannel, i) => (

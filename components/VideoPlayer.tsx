@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { getFromStorage, setToStorage } from '@/lib/localStorage';
 import VideoTool from './VideoTool';
 
@@ -31,7 +30,6 @@ const VideoPlayer = () => {
       }
     }
   };
-
 
 // Изменение масштаба
   // изменение масштаба при нажатии на кнопку
@@ -98,14 +96,13 @@ const VideoPlayer = () => {
   // MobileLeave
   const toggleIsHiddenInterfaceMobile = () => {
     setIsHiddenInterface(false)
-    console.log("mobile touch start")
     setTimeout(() => {
-      console.log("mobile touch end")
       setIsHiddenInterface(true)
     }, 4000)
   }
 
-// TimeLine
+  // TimeLine
+  // Форматирование currentTime и duration к виду 0:00
   const correctDisplayNumber = (number: number) => number < 10 ? `0${number}` : `${number}`
 
   const formatTime = (seconds: number) => {
@@ -118,11 +115,13 @@ const VideoPlayer = () => {
     }
   };
 
+  // Обновление текущего времени и timeLineCurrent
   const updateCurrentParams = () => {
     updateCurrentTime()
     setCurrentWidth((Number(videoRef.current?.currentTime) / Number(videoRef.current?.duration) * 100).toString())
   }
 
+  // Функция которая позволяет обновлять текущее время и timeLineCurrent только раз в секунду, а не несколько раз в секунду
   const throttledUpdateCurrentParams = throttle(updateCurrentParams, 1000);
 
   function throttle(func: Function, limit: number) {
@@ -135,15 +134,26 @@ const VideoPlayer = () => {
       }
     };
   }
+  // 
 
+  // Выполнение всех действий, которые должны выполнится при первой загрузки сайта
   useEffect(() => {
+    // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage("currentTime")
     if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
     }
+
+    // Установка фокуса при загрузки страницы
+    if (typeof window !== undefined) {
+      containerRef.current?.focus({preventScroll: true})
+    }
+
+    // Устанавливаем duration полсе подгрузки метаданных у видое (так не будет NaN)
+    videoRef.current?.addEventListener("loadedmetadata", () => setDuration(formatTime(Number(videoRef.current?.duration.toFixed()))))
+
     if (videoRef.current) {
-      setDuration(formatTime(Number(videoRef.current.duration.toFixed())));
-      videoRef.current.addEventListener('timeupdate', throttledUpdateCurrentParams);
+      videoRef.current?.addEventListener('timeupdate', throttledUpdateCurrentParams);
     }
 
     return () => {
@@ -153,13 +163,10 @@ const VideoPlayer = () => {
     };
   }, []);
 
+  // Добавление каждую секунду в localstorage currentTime
   useEffect(() => {
     setToStorage("currentTime", videoRef.current?.currentTime)
   }, [videoRef.current?.currentTime])
-
-  if (typeof window !== undefined && containerRef.current && videoRef.current) {
-    containerRef.current?.focus({preventScroll: true})
-  }
 
   return (
     <div tabIndex={0} ref={containerRef} onTouchMove={checkIsHiddenInterface} onTouchStart={toggleIsHiddenInterfaceMobile} onMouseMove={hideInterface} onMouseLeave={checkIsHiddenInterface} onKeyDown={keyDownEvent}>

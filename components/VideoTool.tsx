@@ -81,7 +81,7 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
             <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 
-          <p className={`${robotoMedium} text-lg text-white`}>{currentTime} / {duration}</p>
+          <p className={`${robotoMedium} text-lg text-white`}>{currentTime !== "0:00" && duration !== "0:00" ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
         </div>
 
         <button onClick={handleFullScreenChange} className='w-[2.2rem] h-[2.2rem]'><img src="/images/FullScreen.svg" alt="full screen button" /></button>

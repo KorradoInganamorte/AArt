@@ -16,10 +16,10 @@ export default {
       '8xl': '4.8rem',
       '9xl': '6rem',
     },  screens: {
-      'phone': '240px',
+      'phone-sm': '240px',
       'verticalphone': '480px',
       'horizontalphone': '640px',
-      'tablet': '900px',
+      'tablet': '880px',
       'laptop-sm': '1024px',
       'laptop': '1220px',
       'monitor': '1440px',
