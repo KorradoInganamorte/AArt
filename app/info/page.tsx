@@ -10,9 +10,7 @@ const page = () => {
 
   return (
     <>
-        <div>
-            <VideoPlayer />
-        </div>
+        <VideoPlayer />
         <div className="container_page translate-y-[-4rem]">
             <div className="flex justify-between mb-[3.2rem]">
                 <p className={`${robotoMedium} text-3xl text-white`}>Евангелион (1995-1996)</p>

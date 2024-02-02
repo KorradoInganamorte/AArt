@@ -1,22 +1,22 @@
+import { getFromStorage, setToStorage } from "@/lib/localStorage"
 import "./videoTool.sass"
 
 import { robotoMedium } from "@/public/fonts"
-import { RefObject, useEffect, useRef } from "react"
+import { RefObject, useEffect, useRef, useState } from "react"
 
 type Props = {
     className?: string
     isHiddenInterface: boolean
     isPlayed?: boolean
-    currentWidth: string
-    currentTime: string
-    duration: string
     videoRef: RefObject<HTMLVideoElement>
-    formatTime: (seconds: number) => string
+    containerRef: RefObject<HTMLDivElement>
     handlePlayPause: () => void
-    handleFullScreenChange: () => void
 }
 
-const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTime, duration, videoRef, formatTime, handlePlayPause, handleFullScreenChange }: Props) => {
+const Video = ({ className, isHiddenInterface, isPlayed, videoRef, containerRef, handlePlayPause }: Props) => {
+  const [currentWidth, setCurrentWidth] = useState<string>("0");
+  const [currentTime, setCurrentTime] = useState<string>("0:00");
+  const [duration, setDuration] = useState<string>("0:00");
   const timeLineRef = useRef<HTMLInputElement>(null)
   const currentTimeLineRef = useRef<HTMLDivElement>(null)
   const showTimeRef = useRef<HTMLDivElement>(null)
@@ -51,8 +51,143 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
   const changeCurrentTimeRewind = (e: any) => {
     if (videoRef.current && timeLineRef.current) {
       videoRef.current.currentTime = (e.clientX / e.target.offsetWidth) * videoRef.current.duration
+      updateCurrentWidth()
     }
   };
+
+// Изменение масштаба
+  // изменение масштаба при нажатии на кнопку
+  const handleFullScreenChange = () => {
+    toggleFullscreen()
+  };
+
+  // изменение масштаба при двойном клике по видео
+  const toggleFullscreen = () => {
+    if (containerRef.current && videoRef.current) {
+      if(document.fullscreenElement) {
+        videoRef.current.className = "w-[100%] h-[82vh] bg-black"
+        document.exitFullscreen();
+      } else {
+          videoRef.current.className = "w-[100%] h-[100%] bg-black"
+          containerRef.current.requestFullscreen();
+      }
+    }
+  };
+
+// изменение масштаба при нажатии на клавишу "f"
+  // нормально типизировать event
+  const keyDownEvent = (e: any) => {
+    e.preventDefault()
+    if (videoRef.current) {
+      switch (e.key) {
+        case "f":
+          toggleFullscreen()
+          break;
+        case "а":
+          toggleFullscreen()
+          break;
+        case "ArrowRight":
+          if (videoRef.current.currentTime < videoRef.current.duration - 10) {
+            setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime += 10)))
+            updateCurrentWidth()
+          }
+          break;
+        case "ArrowLeft":
+          if(videoRef.current.currentTime > 10) {
+            setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime -= 10)))
+            updateCurrentWidth()
+          }
+          break;
+        case " ":
+          handlePlayPause()
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+// TimeLine
+  // Форматирование currentTime и duration к виду 0:00
+  const correctDisplayNumber = (number: number) => number < 10 ? `0${number}` : `${number}`
+
+  const formatTime = (seconds: number) => {
+    return `${Math.floor(seconds / 60)}:${correctDisplayNumber(Math.floor(seconds % 60))}`
+  }
+
+  const updateCurrentTime = () => {
+    if (videoRef.current) {
+      setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime)));
+    }
+  };
+
+  const updateCurrentWidth = () => {
+    if (videoRef.current) {
+      setCurrentWidth((Number(videoRef.current?.currentTime) / Number(videoRef.current?.duration) * 100).toString())
+    }
+  }
+
+  // Обновление текущего времени и timeLineCurrent
+  const updateCurrentParams = () => {
+    updateCurrentTime()
+    updateCurrentWidth()
+  }
+
+  // Функция которая позволяет обновлять текущее время и timeLineCurrent только раз в секунду, а не несколько раз в секунду
+  const throttledUpdateCurrentParams = throttle(updateCurrentParams, 1000);
+
+  function throttle(func: Function, limit: number) {
+    let inThrottle: boolean;
+    return function(this: any, ...args: any[]) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  }
+  // 
+
+  useEffect(() => {
+    // Если в localStorage есть currentTime, то мы подставляем его
+    const storageCurrentTime = getFromStorage("currentTime")
+    if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current) {
+      videoRef.current.currentTime = Number(storageCurrentTime)
+      updateCurrentWidth()
+    }
+
+    // Установка фокуса на containerRef при загрузки страницы и лобавление слушителя событие на нажатие клавиш
+    if (typeof window !== undefined) {
+      containerRef.current?.focus({preventScroll: true})
+      containerRef.current?.addEventListener("keydown", keyDownEvent)
+    }
+
+    // устанавливаем duration и currentTime сразу при загрузки страницы (а не через секунду как в случаи с currentTime), если они есть
+    if (videoRef.current?.duration) {
+      updateCurrentTime()
+      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+    }
+
+    // Устанавливаем duration полсе подгрузки метаданных у видео (в коде выше, при загрузке страницы может быть NaN из-за того что видео не устпело подгрузится)
+    videoRef.current?.addEventListener("loadedmetadata", () => {
+      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+    })
+
+    if (videoRef.current) {
+      videoRef.current?.addEventListener('timeupdate', throttledUpdateCurrentParams);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('timeupdate', throttledUpdateCurrentParams);
+      }
+    };
+  }, [])
+
+  // Добавление каждую секунду в localstorage currentTime
+  useEffect(() => {
+    setToStorage("currentTime", videoRef.current?.currentTime)
+  }, [videoRef.current?.currentTime])
 
   // Изменение длины currentTimeLineRef каждую секунду на нужное значение (currentTime)
   useEffect(() => {
@@ -62,14 +197,13 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
   }, [videoRef.current?.currentTime])
   
   return (
-    <div className={`${className} translate-y-[-6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
+    <div className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
-      {/* <input onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMove} ref={timeLineRef} className=' w-[100%] h-[.1rem] bg-gray cursor-grab translate-y-[.3rem]' type="range" min={0} max={className === "cursor-not-allowed" ? 1 : Number(duration.replace(":", ""))} step={1} value={className === "cursor-not-allowed" ? 0 : Number(currentTime.replace(":", ""))} onChange={(e) => changeCurrentTimeRewind(parseFloat(e.target.value))} /> */}
-      <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMove} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] translate-y-[.42rem] cursor-pointer' >
-        <div ref={currentTimeLineRef} className="z-[1] w-[0%] h-[.1rem] bg-red translate-y-[.5rem]"></div>
-        <div className="w-[100%] h-[.1rem] bg-gray"></div>
+      <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMove} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
+        <div ref={currentTimeLineRef} className="w-[0%] h-[.1rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
+        <div className="w-[100%] h-[.1rem] bg-gray pointer-events-none"></div>
       </div>
-      <div className='flex items-center justify-between w-[100%] py-[1.2rem] px-[3rem] bg-black/30 translate-y-[4px]'>
+      <div className='flex items-center justify-between w-[100%] py-[1.2rem] px-[3rem] bg-black/30'>
         
         <div className='flex items-center'>
           <button onClick={handlePlayPause}><img className='w-[1.6rem] h-[1.8rem] mr-[2.4rem]' src={isPlayed ? "/images/Play.svg" : "images/Pause.svg"} alt="play/pause button" /></button>
