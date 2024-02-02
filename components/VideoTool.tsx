@@ -6,17 +6,19 @@ import { RefObject, useEffect, useRef, useState } from "react"
 
 type Props = {
     className?: string
-    isHiddenInterface: boolean
-    isPlayed?: boolean
     videoRef: RefObject<HTMLVideoElement>
     containerRef: RefObject<HTMLDivElement>
-    handlePlayPause: () => void
 }
 
-const Video = ({ className, isHiddenInterface, isPlayed, videoRef, containerRef, handlePlayPause }: Props) => {
+const Video = ({ className, videoRef, containerRef }: Props) => {
+  const [isPlayed, setisPlayed] = useState<boolean>(true)
+  const [isHiddenInterface, setIsHiddenInterface] = useState(false)
+
   const [currentWidth, setCurrentWidth] = useState<string>("0");
   const [currentTime, setCurrentTime] = useState<string>("0:00");
   const [duration, setDuration] = useState<string>("0:00");
+
+  const iconMessagePlayPause = useRef<HTMLDivElement>(null);
   const timeLineRef = useRef<HTMLInputElement>(null)
   const currentTimeLineRef = useRef<HTMLDivElement>(null)
   const showTimeRef = useRef<HTMLDivElement>(null)
@@ -27,6 +29,46 @@ const Video = ({ className, isHiddenInterface, isPlayed, videoRef, containerRef,
       videoRef.current.volume = value
     }
   };
+
+  // Изменение состояния просмотра видео (пауза/воспроизвведение)
+  const handlePlayPause = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        iconMessagePlayPause.current?.classList.remove("opacity-100")
+        iconMessagePlayPause.current?.classList.add("opacity-0")
+        videoRef.current.play();
+        setisPlayed(false)
+      } else {
+        iconMessagePlayPause.current?.classList.remove("opacity-0")
+        iconMessagePlayPause.current?.classList.add("opacity-100")
+        videoRef.current.pause();
+        setisPlayed(true)
+      }
+    }
+  };
+
+// Показ/Скрытие VideoTool
+  // MouseLeave
+  const checkIsHiddenInterface = () => {
+    if(isPlayed) {
+      setIsHiddenInterface(false)
+    } else {
+      setIsHiddenInterface(true)
+    }
+  }
+
+  // MouseMove
+  const showInterface = () => {
+    setIsHiddenInterface(false)
+  }
+
+  // MobileLeave
+  // const toggleIsHiddenInterfaceMobile = () => {
+  //   setIsHiddenInterface(false)
+  //   setTimeout(() => {
+  //     setIsHiddenInterface(true)
+  //   }, 4000)
+  // }
 
 // Логика showTimeRef (всплывашка при перемотке видео, которая показывает время, на которое пользователь хочет перемотать)
   // Типизировать нормально event
@@ -156,14 +198,8 @@ const Video = ({ className, isHiddenInterface, isPlayed, videoRef, containerRef,
       updateCurrentWidth()
     }
 
-    // Установка фокуса на containerRef при загрузки страницы и лобавление слушителя событие на нажатие клавиш
-    if (typeof window !== undefined) {
-      containerRef.current?.focus({preventScroll: true})
-      containerRef.current?.addEventListener("keydown", keyDownEvent)
-    }
-
     // устанавливаем duration и currentTime сразу при загрузки страницы (а не через секунду как в случаи с currentTime), если они есть
-    if (videoRef.current?.duration) {
+    if (videoRef.current?.currentTime && videoRef.current?.duration) {
       updateCurrentTime()
       setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
     }
@@ -174,12 +210,29 @@ const Video = ({ className, isHiddenInterface, isPlayed, videoRef, containerRef,
     })
 
     if (videoRef.current) {
+      videoRef.current.addEventListener("click", handlePlayPause)
       videoRef.current?.addEventListener('timeupdate', throttledUpdateCurrentParams);
     }
 
+    // Установка фокуса на containerRef при загрузки страницы и лобавление слушителя событие на нажатие клавиш
+    if (containerRef.current) {
+      containerRef.current.focus({preventScroll: true})
+      containerRef.current.addEventListener("keydown", keyDownEvent)
+      // Mobile
+      // containerRef.current.addEventListener("touchmove", checkIsHiddenInterface)
+      // containerRef.current.addEventListener("touchstart", toggleIsHiddenInterfaceMobile)
+      // PC, laptop, tablet
+      containerRef.current.addEventListener("mousemove", showInterface)
+      containerRef.current.addEventListener("mouseleave", checkIsHiddenInterface)
+    }
+
     return () => {
-      if (videoRef.current) {
+      if (videoRef.current && containerRef.current) {
         videoRef.current.removeEventListener('timeupdate', throttledUpdateCurrentParams);
+        videoRef.current.removeEventListener('click', handlePlayPause);
+        containerRef.current.removeEventListener("keydown", keyDownEvent)
+        containerRef.current.removeEventListener("mousemove", showInterface)
+        containerRef.current.removeEventListener("mouseleave", checkIsHiddenInterface)
       }
     };
   }, [])
@@ -200,15 +253,15 @@ const Video = ({ className, isHiddenInterface, isPlayed, videoRef, containerRef,
     <div className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
       <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMove} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
-        <div ref={currentTimeLineRef} className="w-[0%] h-[.1rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
+        <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
         <div className="w-[100%] h-[.1rem] bg-gray pointer-events-none"></div>
       </div>
-      <div className='flex items-center justify-between w-[100%] py-[1.2rem] px-[3rem] bg-black/30'>
+      <div className='flex items-center justify-between w-[100%] py-[.6rem] px-[3rem] bg-black/30'>
         
         <div className='flex items-center'>
-          <button onClick={handlePlayPause}><img className='w-[1.6rem] h-[1.8rem] mr-[2.4rem]' src={isPlayed ? "/images/Play.svg" : "images/Pause.svg"} alt="play/pause button" /></button>
+          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "images/Pause.svg"} alt="play/pause button" /></button>
           
-          <div className='flex items-center mr-[2.4rem]'>
+          <div className='flex items-center mx-[2.4rem]'>
             <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="" />
             <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
