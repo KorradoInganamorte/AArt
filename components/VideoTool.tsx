@@ -60,8 +60,6 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
       currentTimeLineRef.current.style.width = `${currentWidth}%`
     }
   }, [videoRef.current?.currentTime])
-
-  // console.log(isHiddenInterface)
   
   return (
     <div className={`${className} translate-y-[-6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
@@ -81,7 +79,7 @@ const Video = ({ className, isHiddenInterface, isPlayed, currentWidth, currentTi
             <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 
-          <p className={`${robotoMedium} text-lg text-white`}>{currentTime !== "0:00" && duration !== "0:00" ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
+          <p className={`${robotoMedium} text-lg text-white`}>{duration !== "0:00" && currentTime ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
         </div>
 
         <button onClick={handleFullScreenChange} className='w-[2.2rem] h-[2.2rem]'><img src="/images/FullScreen.svg" alt="full screen button" /></button>

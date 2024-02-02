@@ -115,10 +115,16 @@ const VideoPlayer = () => {
     }
   };
 
+  const updateCurrentWidth = () => {
+    if (videoRef.current) {
+      setCurrentWidth((Number(videoRef.current?.currentTime) / Number(videoRef.current?.duration) * 100).toString())
+    }
+  }
+
   // Обновление текущего времени и timeLineCurrent
   const updateCurrentParams = () => {
     updateCurrentTime()
-    setCurrentWidth((Number(videoRef.current?.currentTime) / Number(videoRef.current?.duration) * 100).toString())
+    updateCurrentWidth()
   }
 
   // Функция которая позволяет обновлять текущее время и timeLineCurrent только раз в секунду, а не несколько раз в секунду
@@ -142,6 +148,7 @@ const VideoPlayer = () => {
     const storageCurrentTime = getFromStorage("currentTime")
     if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
+      updateCurrentWidth()
     }
 
     // Установка фокуса при загрузки страницы
@@ -149,8 +156,16 @@ const VideoPlayer = () => {
       containerRef.current?.focus({preventScroll: true})
     }
 
-    // Устанавливаем duration полсе подгрузки метаданных у видое (так не будет NaN)
-    videoRef.current?.addEventListener("loadedmetadata", () => setDuration(formatTime(Number(videoRef.current?.duration.toFixed()))))
+    // устанавливаем duration и currentTime сразу при загрузки страницы (а не через секунду как в случаи с currentTime), если они есть
+    if (videoRef.current?.duration) {
+      updateCurrentTime()
+      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+    }
+
+    // Устанавливаем duration полсе подгрузки метаданных у видео (в коде выше, при загрузке страницы может быть NaN из-за того что видео не устпело подгрузится)
+    videoRef.current?.addEventListener("loadedmetadata", () => {
+      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+    })
 
     if (videoRef.current) {
       videoRef.current?.addEventListener('timeupdate', throttledUpdateCurrentParams);
