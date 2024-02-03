@@ -109,7 +109,7 @@ export default function Home() {
 
       <div className="film-layout">
         {animePannels.map((pannel, i) => (
-          <Card id={i} img={pannel.imgSource} text={pannel.textPannels} />
+          <Card key={i} img={pannel.imgSource} text={pannel.textPannels} />
         ))}
       </div>
 

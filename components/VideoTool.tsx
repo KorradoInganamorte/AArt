@@ -59,16 +59,20 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   // MouseMove
   const showInterface = () => {
-    setIsHiddenInterface(false)
+    hiddenInterfaceTimeout()
   }
 
   // MobileLeave
   // const toggleIsHiddenInterfaceMobile = () => {
-  //   setIsHiddenInterface(false)
-  //   setTimeout(() => {
-  //     setIsHiddenInterface(true)
-  //   }, 4000)
+  //   hiddenInterfaceTimeout()
   // }
+
+const hiddenInterfaceTimeout = () => {
+  setIsHiddenInterface(false)
+  setTimeout(() => {
+    setIsHiddenInterface(true)
+  }, 3800)
+}
 
 // Логика showTimeRef (всплывашка при перемотке видео, которая показывает время, на которое пользователь хочет перемотать)
   // Типизировать нормально event
@@ -251,6 +255,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
   
   return (
     <div className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
+      <div ref={iconMessagePlayPause} className='absolute top-[-40vh] left-[46vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity'><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
       <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMove} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
         <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
@@ -261,7 +266,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
         <div className='flex items-center'>
           <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "images/Pause.svg"} alt="play/pause button" /></button>
           
-          <div className='flex items-center mx-[2.4rem]'>
+          <div className='flex items-center ml-[1.6rem] mr-[2.4rem]'>
             <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="" />
             <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
