@@ -1,14 +1,6 @@
-"use client"
-
-// import useWindowDimensions from "@/lib/hooks/useWindowDimensions"
 import { montserratSubrayada } from "@/public/fonts"
-import { useEffect } from "react"
 
 const Header = () => {
-  // let isMobile = false
-  // if (useWindowDimensions() === "Mobile") {
-  //   isMobile = true
-  // }
 
   return (
     <div className="flex items-center h-[5.6rem] bg-dark-gray phone-sm:px-[1.6rem] verticalphone:px-[2rem] horizontalphone:px-[2.4rem] tablet:px-[2.8rem] laptop:px-[3rem]">

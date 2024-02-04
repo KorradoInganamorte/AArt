@@ -11,6 +11,7 @@ type Props = {
 }
 
 const Video = ({ className, videoRef, containerRef }: Props) => {
+
   const [isPlayed, setisPlayed] = useState<boolean>(true)
   const [isHiddenInterface, setIsHiddenInterface] = useState(false)
 
@@ -221,17 +222,19 @@ const hiddenInterfaceTimeout = () => {
     // Установка фокуса на containerRef при загрузки страницы и лобавление слушителя событие на нажатие клавиш
     if (containerRef.current) {
       containerRef.current.focus({preventScroll: true})
-      containerRef.current.addEventListener("keydown", keyDownEvent)
       // Mobile
       // containerRef.current.addEventListener("touchmove", checkIsHiddenInterface)
       // containerRef.current.addEventListener("touchstart", toggleIsHiddenInterfaceMobile)
       // PC, laptop, tablet
+      containerRef.current.addEventListener("keydown", keyDownEvent)
       containerRef.current.addEventListener("mousemove", showInterface)
       containerRef.current.addEventListener("mouseleave", checkIsHiddenInterface)
     }
 
     return () => {
       if (videoRef.current && containerRef.current) {
+        // containerRef.current.removeEventListener("touchmove", checkIsHiddenInterface)
+        // containerRef.current.removeEventListener("touchstart", toggleIsHiddenInterfaceMobile)
         videoRef.current.removeEventListener('timeupdate', throttledUpdateCurrentParams);
         videoRef.current.removeEventListener('click', handlePlayPause);
         containerRef.current.removeEventListener("keydown", keyDownEvent)
