@@ -1,7 +1,8 @@
 "use client"
 
-import { robotoMedium } from "@/public/fonts"
 import { useState } from "react"
+
+import { robotoMedium } from "@/public/fonts"
 
 type Props = {
     lists: string[]

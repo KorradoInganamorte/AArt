@@ -1,6 +1,8 @@
 import FilterBtn from "@/UI/FilterBtn"
 import Card from "@/components/Card"
 
+import "./index.sass"
+
 export default function Home() {
   const lists = ["Все", "В тренде", "Новые"]
 
@@ -30,7 +32,7 @@ export default function Home() {
     imgSource: "evangelion 4.44.webp",
     textPannels: "Евангелион 3.0 + 1.01: Как-то раз (2021)" 
   },
-]
+  ]
 
   return (
     <div className="container_page">
