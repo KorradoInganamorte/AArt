@@ -56,7 +56,7 @@ const page = () => {
 
   return (
     <div className="container_page">
-        <div className="bg-[#B1B1B1]/5 pt-[1.6rem] mt-[1.2rem] rounded-[.5rem]">
+        <div className="gradient pt-[1.6rem] mt-[1.2rem] rounded-[.5rem]">
 
             <div className="px-[1.2rem] laptop:px-[2rem] mb-[5.4rem]">
                 <div className="flex">
@@ -96,12 +96,12 @@ const page = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center mb-[3.8rem]">
+            <div className="flex flex-col items-center">
                 <p className={`${robotoMedium} text-6xl text-white mb-[3.4rem]`}>Смотреть Трейлер</p>
                 <VideoPlayer></VideoPlayer>
             </div>
 
-            <div className="px-[1.4rem] laptop:px-[2.4rem]">
+            <div className="overflow-hidden">
                 <div className="fragment-layout">
                     {fragments.map((url, i) => (
                         <Fragment key={i} url={url}></Fragment>
