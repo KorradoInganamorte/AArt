@@ -14,7 +14,7 @@ const page = () => {
         <div className="container_page translate-y-[-4rem]">
             <div className="flex justify-between mb-[3.2rem]">
                 <p className={`${robotoMedium} text-3xl text-white`}>Евангелион (1995-1996)</p>
-                <button className={`flex items-center bg-white py-[.8rem] px-[1.8rem] rounded-[.5rem] ${robotoMedium} text-xl text-black group`}>Следующая серия <img className="w-[1.8rem] ml-[1rem] group-hover:translate-x-[.66rem] transition-transform" src="/images/ArrowNext.svg" alt="next icon" /></button>
+                <button className={`flex items-center bg-white py-[.8rem] px-[1.8rem] rounded-[.5rem] ${robotoMedium} text-xl text-black group`}>Следующая серия <img className="w-[1.8rem] ml-[1rem] group-hover:translate-x-[.66rem] transition-transform" src="/images/ArrowNext.svg" alt="next series icon" /></button>
             </div>
             <div className="flex flex-col">
                 <p className={`${robotoMedium} text-white text-3xl mb-[.4rem]`}>Все серии</p>

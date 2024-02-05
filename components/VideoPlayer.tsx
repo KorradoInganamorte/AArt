@@ -9,7 +9,7 @@ const VideoPlayer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div tabIndex={0} ref={containerRef}>
+    <div className='w-[100%]' tabIndex={0} ref={containerRef}>
       <video className='w-[100%] h-[82vh] bg-black' ref={videoRef} src="video/evangelion.short.mp4"></video>
       {videoRef.current && containerRef.current ? (
         <VideoTool videoRef={videoRef} containerRef={containerRef}></VideoTool>
