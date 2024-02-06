@@ -1,4 +1,5 @@
 import { RefObject, useEffect, useRef, useState } from "react"
+import { usePathname } from "next/navigation"
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
 
 import { robotoMedium } from "@/public/fonts"
@@ -11,6 +12,7 @@ type Props = {
 }
 
 const Video = ({ className, videoRef, containerRef }: Props) => {
+  const pathname = usePathname()
 
   const [isPlayed, setIsPlayed] = useState<boolean>(true)
   const [isHiddenInterface, setIsHiddenInterface] = useState<boolean>(false)
@@ -35,14 +37,14 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
   // Изменение состояния просмотра видео (пауза/воспроизвведение)
   const handlePlayPause = () => {
     if (videoRef.current) {
+      setIsHiddenInterface(false)
+      hiddenInterfaceTimeout(videoRef.current.paused)
       if (videoRef.current.paused) {
-        console.log("paused")
         setIsPlayed(false)
         iconMessagePlayPause.current?.classList.remove("opacity-100")
         iconMessagePlayPause.current?.classList.add("opacity-0")
         videoRef.current.play();
       } else {
-        console.log("play")
         iconMessagePlayPause.current?.classList.remove("opacity-0")
         iconMessagePlayPause.current?.classList.add("opacity-100")
         setIsPlayed(true)
@@ -51,33 +53,30 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(isPlayed);
-    // проведение операций на основе нового значения isPlayed
-  }, [isPlayed]);
-
 // Показ/Скрытие VideoTool
   // MouseLeave
-  // console.log(isPlayed)
   const checkIsHiddenInterface = () => {
-    console.log(isPlayed)
-    if(isPlayed) {
+    if(videoRef.current && !videoRef.current.paused) {
       setIsHiddenInterface(true)
     } else {
       setIsHiddenInterface(false)
     }
   }
 
-  // MouseMove
+  // MouseOver
   const showInterface = () => {
-    hiddenInterfaceTimeout()
+    // hiddenInterfaceTimeout()
   }
 
-  const hiddenInterfaceTimeout = () => {
-    // setIsHiddenInterface(false)
-    // setTimeout(() => {
-    //   setIsHiddenInterface(true)
-    // }, 3800)
+  const hiddenInterfaceTimeout = (paused: boolean | undefined) => {
+    if (paused) {
+      const id = setTimeout(() => {
+        setIsHiddenInterface(true)
+        clearTimeout(id)
+      }, 3800)
+    } else {
+      setIsHiddenInterface(false)
+    }
   }
 
 // Логика showTimeRef (всплывашка при перемотке видео, которая показывает время, на которое пользователь хочет перемотать)
@@ -113,8 +112,9 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
     toggleFullscreen()
   };
 
-  // изменение масштаба при двойном клике по видео
+  // функция изменение масштаба
   const toggleFullscreen = () => {
+    hiddenInterfaceTimeout(!videoRef.current?.paused)
     if (containerRef.current && videoRef.current) {
       if(document.fullscreenElement) {
         videoRef.current.className = "w-[100%] h-[82vh] bg-black"
@@ -141,13 +141,17 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
         case "ArrowRight":
           if (videoRef.current.currentTime < videoRef.current.duration - 10) {
             setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime += 10)))
+            setIsHiddenInterface(false)
             updateCurrentWidth()
+            hiddenInterfaceTimeout(!videoRef.current.paused)
           }
           break;
         case "ArrowLeft":
           if(videoRef.current.currentTime > 10) {
             setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime -= 10)))
+            setIsHiddenInterface(false)
             updateCurrentWidth()
+            hiddenInterfaceTimeout(!videoRef.current.paused)
           }
           break;
         case " ":
@@ -202,7 +206,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   useEffect(() => {
     // Если в localStorage есть currentTime, то мы подставляем его
-    const storageCurrentTime = getFromStorage("currentTime")
+    const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
     if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
       updateCurrentWidth()
@@ -226,6 +230,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
     if (videoRef.current) {
       videoRef.current.addEventListener("click", handlePlayPause)
       videoRef.current.addEventListener('timeupdate', throttledUpdateCurrentParams);
+      videoRef.current.addEventListener("mousemove", showInterface)
       // videoRef.current.addEventListener("mouseleave", checkIsHiddenInterface)
     }
 
@@ -233,7 +238,6 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
     if (containerRef.current) {
       containerRef.current.focus({preventScroll: true})
       containerRef.current.addEventListener("keydown", keyDownEvent)
-      containerRef.current.addEventListener("mousemove", showInterface)
     }
 
     return () => {
@@ -241,16 +245,16 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
         videoToolRef.current.removeEventListener('mouseleave', checkIsHiddenInterface);
         videoRef.current.removeEventListener('click', handlePlayPause);
         videoRef.current.removeEventListener('timeupdate', throttledUpdateCurrentParams);
-        videoRef.current.removeEventListener("mouseleave", checkIsHiddenInterface)
+        videoRef.current.removeEventListener("mousemove", checkIsHiddenInterface)
+        containerRef.current.removeEventListener("mouseover", showInterface)
         containerRef.current.removeEventListener("keydown", keyDownEvent)
-        containerRef.current.removeEventListener("mousemove", showInterface)
       }
     };
   }, [])
 
   // Добавление каждую секунду в localstorage currentTime
   useEffect(() => {
-    setToStorage("currentTime", videoRef.current?.currentTime)
+    setToStorage(`${pathname}/currentTime`, videoRef.current?.currentTime)
   }, [videoRef.current?.currentTime])
 
   // Изменение длины currentTimeLineRef каждую секунду на нужное значение (currentTime)

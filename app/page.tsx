@@ -11,13 +11,13 @@ export default function Home() {
     imgSource: "berserk.webp",
     textPannels: "Берсерк (1997-1998)"
   }, {
-    imgSource: "evangelion.jpg",
+    imgSource: "evangelion.webp",
     textPannels: "Евангелион (1995-1996)"
   }, {
-    imgSource: "evangelion death.jpg",
+    imgSource: "evangelion death.webp",
     textPannels: "Евангелион: Смерть и Перерождение (1997)" 
   }, {
-    imgSource: "the end of evangelion.jpg",
+    imgSource: "the end of evangelion.webp",
     textPannels: "Конец Евангелиона (1997)" 
   }, {
     imgSource: "evangelion 1.11.webp",
