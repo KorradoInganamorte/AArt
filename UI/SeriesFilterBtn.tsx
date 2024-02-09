@@ -19,7 +19,7 @@ const SeriesFilterBtn = ({ lists }: Props) => {
   return (
     <>
         {lists.map((list, i) => (
-            <div key={i} onClick={() => handleClick(i)} className={`flex justify-center ${isActive === i ? "bg-white text-black" : "bg-gray text-white hover:bg-gray-hover-filter_btn"} py-[.6rem] px-[2.4rem] last:mr-0 rounded-[.5rem] ${robotoMedium} text-xl whitespace-nowrap cursor-pointer ease-in transition-colors`}>{list}</div>
+            <div key={i} onClick={() => handleClick(i)} className={`flex justify-center ${isActive === i ? "bg-white text-black" : "bg-gray text-white hover:bg-gray-hover-filter_btn"} py-[.7rem] px-[2.4rem] last:mr-0 rounded-[.5rem] ${robotoMedium} text-xl whitespace-nowrap cursor-pointer ease-in transition-colors`}>{list}</div>
         ))}
     </>
   )
