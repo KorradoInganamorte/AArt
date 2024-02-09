@@ -4,6 +4,7 @@ import "./index.sass"
 import AboutColumn from "@/UI/AboutColumn"
 import VideoPlayer from "@/components/VideoPlayer"
 import Fragment from "@/UI/Fragment"
+import RatingFilm from "@/UI/RatingFilm"
 
 const page = () => {
   const aboutAnime = [
@@ -52,6 +53,15 @@ const page = () => {
     }
   ]
 
+  const ratingPlace = ["Кинопоиск", "MyShows.me"]
+  const rating = [{
+    rating: "8.1",
+    of: "10"
+  }, {
+    rating: "4.2",
+    of: "5"
+  }]
+
   const fragments = ["fragment1.webp", "fragment2.webp", "fragment3.webp", "fragment4.webp"]
 
   return (
@@ -64,14 +74,15 @@ const page = () => {
                         <img className="w-[35.2rem] h-[47.8rem] rounded-[.5rem] mb-[1.6rem]" src="/images/evangelion.jpg" alt="film image" />
                         <button className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[2.5rem] ml-[2.6rem] group-hover:translate-x-[1.66rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></button>
                         <div className={`flex gap-x-[3.2rem] ${robotoMedium} text-3xl text-white`}>
-                            <div>
+                            <RatingFilm ratingPlace={ratingPlace} rating={rating} large></RatingFilm>
+                            {/* <div>
                                 <p className="mb-[1rem]">Кинопоиск</p>
                                 <p>MyShows.me</p>
                             </div>
                             <div>
                                 <p className="mb-[1rem]">8.1 <span className={`${robotoRegular} text-2xl`}>из 10</span></p>
                                 <p>4.2 <span className={`${robotoRegular} text-2xl`}>из 5</span></p>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="text-white mr-[3.6rem] monitor:mr-[8rem]">

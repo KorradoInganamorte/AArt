@@ -1,10 +1,12 @@
 type Props = {
     title: string
+    of: string
+    mb?: string
 }
 
-const InfoColumn = ({ title }: Props) => {
+const InfoColumn = ({ title, of, mb }: Props) => {
   return (
-      <p className="text-xl text-white mb-[1.72rem]">{title}</p>
+      <p className={`text-4xl text-white mb-[${mb}rem]`}>{title} <span className="text-xl">из {of}</span></p>
   )
 }
 

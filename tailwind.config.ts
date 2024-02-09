@@ -33,6 +33,7 @@ export default {
       "gray-hover-filter_btn": "#585858",
       "gray-placeholder": "#A5A5A5",
       "gray-hover-card": "#2B2B2B",
+      "gray-item-card": "#D7D7D7",
       red: "#FF3D00"
     },
     extend: {},

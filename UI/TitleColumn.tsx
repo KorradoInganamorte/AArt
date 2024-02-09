@@ -1,10 +1,11 @@
 type Props = {
     title: string
+    mb?: string
 }
 
-const TitleColumn = ({ title }: Props) => {
+const TitleColumn = ({ title, mb }: Props) => {
   return (
-      <p className="text-lg text-[#D7D7D7] mb-[2rem]">{title}:</p>
+      <p className={`text-2xl text-gray-item-card mb-[${mb}rem]`}>{title}:</p>
   )
 }
 
