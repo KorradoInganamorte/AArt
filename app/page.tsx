@@ -1,3 +1,5 @@
+"use client"
+
 import CardScrollY from "@/components/CardScrollY"
 import AboutColumnScrollY from "@/UI/AboutColumnScrollY"
 import RatingFilm from "@/UI/RatingFilm"
@@ -6,6 +8,7 @@ import { robotoMedium } from "@/public/fonts"
 import "./index.sass"
 
 const page = () => {
+
   const urls = ["evangelion 3.33.webp", "evangelion 2.22.webp", "evangelion 1.11.webp", "berserk.webp", "evangelion.webp", "evangelion death.webp", "the end of evangelion.webp"]
 
   const aboutFilmScrollY = [{
