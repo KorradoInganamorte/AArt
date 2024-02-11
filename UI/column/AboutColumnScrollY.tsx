@@ -3,7 +3,7 @@ type Props = {
     info: string
 }
 
-const AboutColumn = ({ title, info }: Props) => {
+const AboutColumnScrollY = ({ title, info }: Props) => {
   return (
     <div className="flex items-end mb-[.6rem]">
         <p className="text-xl text-gray-item-card mr-[2rem]">{title}:</p>
@@ -12,4 +12,4 @@ const AboutColumn = ({ title, info }: Props) => {
   )
 }
 
-export default AboutColumn
+export default AboutColumnScrollY

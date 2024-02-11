@@ -1,8 +1,8 @@
 import { robotoMedium, robotoRegular } from "@/public/fonts"
 
 import "./index.sass"
-import AboutColumn from "@/UI/AboutColumn"
-import VideoPlayer from "@/components/VideoPlayer"
+import AboutColumn from "@/UI/column/AboutColumn"
+import VideoPlayer from "@/components/video_player/VideoPlayer"
 import Fragment from "@/UI/Fragment"
 import RatingFilm from "@/UI/RatingFilm"
 
@@ -75,14 +75,6 @@ const page = () => {
                         <button className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[2.5rem] ml-[2.6rem] group-hover:translate-x-[1.66rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></button>
                         <div className={`flex gap-x-[3.2rem] ${robotoMedium} text-3xl text-white`}>
                             <RatingFilm ratingPlace={ratingPlace} rating={rating} large></RatingFilm>
-                            {/* <div>
-                                <p className="mb-[1rem]">Кинопоиск</p>
-                                <p>MyShows.me</p>
-                            </div>
-                            <div>
-                                <p className="mb-[1rem]">8.1 <span className={`${robotoRegular} text-2xl`}>из 10</span></p>
-                                <p>4.2 <span className={`${robotoRegular} text-2xl`}>из 5</span></p>
-                            </div> */}
                         </div>
                     </div>
                     <div className="text-white mr-[3.6rem] monitor:mr-[8rem]">

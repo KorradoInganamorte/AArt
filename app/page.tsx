@@ -1,15 +1,13 @@
 "use client"
 
-import CardScrollY from "@/components/CardScrollY"
-import AboutColumnScrollY from "@/UI/AboutColumnScrollY"
+import CardScrollY from "@/components/card/CardScrollY"
+import AboutColumnScrollY from "@/UI/column/AboutColumnScrollY"
 import RatingFilm from "@/UI/RatingFilm"
 
 import { robotoMedium } from "@/public/fonts"
 import "./index.sass"
 
-const page = () => {
-
-  const urls = ["evangelion 3.33.webp", "evangelion 2.22.webp", "evangelion 1.11.webp", "berserk.webp", "evangelion.webp", "evangelion death.webp", "the end of evangelion.webp"]
+const Home = () => {
 
   const aboutFilmScrollY = [{
     title: "Серий",
@@ -41,7 +39,7 @@ const page = () => {
 
       <h3 className={`w-max mx-auto ${robotoMedium} text-5xl text-white mb-[2rem]`}>Классические аниме</h3>
       <div className="flex flex-col justify-center mb-[2.4rem]">
-        <CardScrollY urls={urls}></CardScrollY>
+        <CardScrollY></CardScrollY>
       </div>
 
       <div className="film-block w-[82vw] mx-auto flex bg-black rounded-[1rem] px-[1.4rem] py-[1.4rem]">
@@ -70,4 +68,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Home
