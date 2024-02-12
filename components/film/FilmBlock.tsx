@@ -18,8 +18,8 @@ type Props = {
 }
 
 const FilmBlock = ({ id }: Props) => {
-    const { PORT } = usePort()
-    const { data: anime, isLoading, isSuccess } = useGetOnesAnimeQuery({ id: id})
+  const { PORT } = usePort()
+  const { data: anime, isLoading, isSuccess } = useGetOnesAnimeQuery({ id: id })
 
   return (
     <>
@@ -35,7 +35,7 @@ const FilmBlock = ({ id }: Props) => {
             <div className="flex flex-col justify-between w-[65%]">
               <div>
                 <h2 className={`inline-block ${robotoMedium} text-5xl text-white mb-[1.4rem]`}>{anime?.data.attributes.title}</h2>
-                <p className="w text-2xl text-white mb-[1.2rem]">{anime?.data.attributes.description}</p>
+                <p className="w text-2xl text-white mb-[1.2rem]">{anime?.data.attributes.description_short}</p>
                 <AboutColumnScrollY title="Серий" info={`${anime?.data.attributes.series}`}></AboutColumnScrollY>
                 <AboutColumnScrollY title="Длительность" info={`${anime?.data.attributes.time_of_series}`}></AboutColumnScrollY>
               </div>

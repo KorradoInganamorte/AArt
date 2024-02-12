@@ -1,5 +1,5 @@
 import CardBlock from "@/components/card/CardBlock"
-import FilmOfTheYear from "@/components/FilmOfTheYear"
+import FilmOfTheYear from "@/components/film/FilmOfTheYear"
 
 import { robotoMedium } from "@/public/fonts"
 import "./index.sass"

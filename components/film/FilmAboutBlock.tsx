@@ -11,6 +11,7 @@ import { usePort } from "@/context/portContext"
 import { useGetOnesAnimeQuery } from "@/redux/services/anime"
 
 import { robotoMedium } from "@/public/fonts"
+import Link from "next/link"
 
 type Props = {
     id: number
@@ -29,7 +30,7 @@ const FilmAboutBlock = ({ id }: Props) => {
                 <div className="flex">
                     <div className="flex flex-col w-[35.2rem] mr-[2.4rem]">
                         <img className="w-[35.2rem] h-[47.8rem] rounded-[.5rem] mb-[1.6rem]" src={`${PORT}${anime?.data.attributes.image_jpg.data.attributes.url}`} alt="film image" />
-                        <button className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[2.5rem] ml-[2.6rem] group-hover:translate-x-[1.66rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></button>
+                        <Link href={`/watch/${id}`} className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[2.5rem] ml-[2.6rem] group-hover:translate-x-[1.66rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></Link>
                         <div className={`flex gap-x-[3.2rem] ${robotoMedium} text-3xl text-white`}>
                             {anime && <RatingFilm rating={anime.data.attributes.rating} large></RatingFilm>}
                         </div>

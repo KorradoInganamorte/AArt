@@ -207,13 +207,13 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
   useEffect(() => {
     // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
-    if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current) {
+    if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current && videoRef.current.currentTime) {
       videoRef.current.currentTime = Number(storageCurrentTime)
       updateCurrentWidth()
     }
 
     // устанавливаем duration и currentTime сразу при загрузки страницы (а не через секунду как в случаи с currentTime), если они есть
-    if (videoRef.current?.currentTime && videoRef.current?.duration) {
+    if (videoRef.current) {
       updateCurrentTime()
       setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
     }
@@ -263,6 +263,8 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
       currentTimeLineRef.current.style.width = `${currentWidth}%`
     }
   }, [videoRef.current?.currentTime])
+
+  console.log(currentTime, duration)
   
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
@@ -278,7 +280,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
           <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
           
           <div className='flex items-center ml-[1.6rem] mr-[2.4rem]'>
-            <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="" />
+            <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="volume change icon" />
             <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 

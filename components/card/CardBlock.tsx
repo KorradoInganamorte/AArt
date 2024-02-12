@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic"
 import { useState } from "react"
 
-const FilmBlock = dynamic(() => import("@/components/FilmBlock"))
+const FilmBlock = dynamic(() => import("@/components/film/FilmBlock"))
 const CardScrollY = dynamic(() => import("@/components/card/CardScrollY"))
 
 const CardBlock = () => {
