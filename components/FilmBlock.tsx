@@ -1,7 +1,10 @@
 "use client"
 
-import AboutColumnScrollY from "@/UI/column/AboutColumnScrollY"
-import RatingFilm from "@/UI/RatingFilm"
+import dynamic from "next/dynamic"
+
+const RatingFilm = dynamic(() => import("@/UI/RatingFilm"))
+const AboutColumnScrollY = dynamic(() => import("@/UI/column/AboutColumnScrollY"))
+
 import SkeletonFilmBlock from "@/UI/skeleton/SkeletonFilmBlock"
 
 import { useGetOnesAnimeQuery } from "@/redux/services/anime"

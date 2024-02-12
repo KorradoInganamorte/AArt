@@ -1,7 +1,10 @@
 "use client"
 
-import RatingFilm from "@/UI/RatingFilm"
-import AboutColumn from "@/UI/column/AboutColumn"
+import dynamic from "next/dynamic"
+
+const RatingFilm = dynamic(() => import("@/UI/RatingFilm"))
+const AboutColumn = dynamic(() => import("@/UI/column/AboutColumn"))
+
 import SkeletonAboutBlock from "@/UI/skeleton/SkeletonAboutBlock"
 
 import { usePort } from "@/context/portContext"
@@ -9,15 +12,19 @@ import { useGetOnesAnimeQuery } from "@/redux/services/anime"
 
 import { robotoMedium } from "@/public/fonts"
 
-const FilmAboutBlock = () => {
+type Props = {
+    id: number
+}
+
+const FilmAboutBlock = ({ id }: Props) => {
   const { PORT } = usePort()
-  const { data: anime, isLoading } = useGetOnesAnimeQuery({ id: 1})
+  const { data: anime, isLoading, isSuccess } = useGetOnesAnimeQuery({ id: id })
 
   return (
     <>
         {isLoading ? (
           <SkeletonAboutBlock></SkeletonAboutBlock>
-            ) : (
+            ) : isSuccess ? (
              <div className="px-[2rem] mb-[5.4rem]">
                 <div className="flex">
                     <div className="flex flex-col w-[35.2rem] mr-[2.4rem]">
@@ -51,6 +58,8 @@ const FilmAboutBlock = () => {
                     </div>
                 </div>
             </div>
+        ) : (
+            <SkeletonAboutBlock></SkeletonAboutBlock>
         )}
     </>
   )

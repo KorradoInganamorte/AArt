@@ -275,7 +275,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
       <div className='flex items-center justify-between w-[100%] py-[.6rem] px-[3rem] bg-black/30'>
         
         <div className='flex items-center'>
-          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "images/Pause.svg"} alt="play/pause button" /></button>
+          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
           
           <div className='flex items-center ml-[1.6rem] mr-[2.4rem]'>
             <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="" />

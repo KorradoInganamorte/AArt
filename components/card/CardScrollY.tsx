@@ -1,11 +1,12 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import dynamic from "next/dynamic"
+import { Dispatch, SetStateAction, useEffect, useRef } from "react"
 
 import { usePort } from "@/context/portContext"
 import { useGetAllAnimeQuery } from "@/redux/services/anime"
 
-import SkeletonScrollY from "@/UI/skeleton/SkeletonScrollY"
+const SkeletonScrollY = dynamic(() => import("@/UI/skeleton/SkeletonScrollY"))
 
 type Props = {
     id: number
@@ -15,9 +16,8 @@ type Props = {
 
 const CardScrollY = ({ isActive, setIsActive }: Props) => {
   const { PORT } = usePort()
-  const { data: animes, isLoading, isSuccess } = useGetAllAnimeQuery("")
+  const { data: animes, isLoading } = useGetAllAnimeQuery("")
 
-  // const [isActive, setActive] = useState<number>(id)
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (i: number) => {

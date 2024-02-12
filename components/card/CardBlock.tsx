@@ -1,9 +1,10 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { useState } from "react"
 
-import FilmBlock from "../FilmBlock"
-import CardScrollY from "./CardScrollY"
+const FilmBlock = dynamic(() => import("@/components/FilmBlock"))
+const CardScrollY = dynamic(() => import("@/components/card/CardScrollY"))
 
 const CardBlock = () => {
   const [isActive, setIsActive] = useState<number>(3)
