@@ -8,11 +8,25 @@ export interface Anime {
     meta: Meta
 }
 
+export interface AnimeOfTheYear {
+    data: {
+        id: number
+        attributes: {
+            title: string
+            description: string
+            url: string
+            img: Media
+        }
+    }
+    meta: {}
+}
+
 interface Data {
     id: number
     attributes: {
         title: string
         description: string
+        description_short: string
         first_issue: string
         genre: string
         country: string

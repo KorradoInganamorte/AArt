@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 
 import { usePort } from "@/context/portContext"
 import { useGetAllAnimeQuery } from "@/redux/services/anime"
@@ -8,18 +8,20 @@ import { useGetAllAnimeQuery } from "@/redux/services/anime"
 import SkeletonScrollY from "@/UI/skeleton/SkeletonScrollY"
 
 type Props = {
-    urls: string[]
+    id: number
+    isActive: number
+    setIsActive: Dispatch<SetStateAction<number>>
 }
 
-const CardScrollY = () => {
+const CardScrollY = ({ isActive, setIsActive }: Props) => {
   const { PORT } = usePort()
   const { data: animes, isLoading, isSuccess } = useGetAllAnimeQuery("")
 
-  const [isActive, setActive] = useState<number>(3)
+  // const [isActive, setActive] = useState<number>(id)
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (i: number) => {
-    setActive(i)
+    setIsActive(i)
   }
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const CardScrollY = () => {
   }, []);
   
   return (
-    <div ref={containerRef} className="core flex items-end overflow-x-scroll">
+    <div ref={containerRef} className="flex items-end overflow-x-scroll">
       {isLoading ? (
       Array.from({ length: 7 }).map((_, i) => (
         <SkeletonScrollY key={i}></SkeletonScrollY>
