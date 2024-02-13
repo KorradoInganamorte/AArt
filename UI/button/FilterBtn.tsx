@@ -1,18 +1,16 @@
-"use client"
-
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 
 import { robotoMedium } from "@/public/fonts"
 
 type Props = {
   lists: string[]
+  isActive: number
+  setIsActive: Dispatch<SetStateAction<number>>
 }
 
-const FilterBtn = ({ lists }: Props) => {
-  const [isActive, setActive] = useState<number>(0)
-
+const FilterBtn = ({ lists, isActive, setIsActive }: Props) => {
   const handleClick = (i: number) => {
-    setActive(i)
+    setIsActive(i)
   }
 
   return (

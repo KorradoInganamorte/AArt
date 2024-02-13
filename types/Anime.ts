@@ -36,6 +36,7 @@ interface Data {
         time_all: string
         acters: Acters[]
         rating: Ratings[]
+        category: string
         image_webp: Media
         image_jpg: Media
         videoURL: string

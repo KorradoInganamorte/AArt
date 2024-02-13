@@ -252,20 +252,16 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
     };
   }, [])
 
-  // Добавление каждую секунду в localstorage currentTime
   useEffect(() => {
+    // Добавление каждую секунду в localstorage currentTime
     setToStorage(`${pathname}/currentTime`, videoRef.current?.currentTime)
-  }, [videoRef.current?.currentTime])
 
-  // Изменение длины currentTimeLineRef каждую секунду на нужное значение (currentTime)
-  useEffect(() => {
+    // Изменение длины currentTimeLineRef каждую секунду на нужное значение (currentTime)
     if (currentTimeLineRef.current) {
       currentTimeLineRef.current.style.width = `${currentWidth}%`
     }
   }, [videoRef.current?.currentTime])
 
-  console.log(currentTime, duration)
-  
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
       <div ref={iconMessagePlayPause} className='absolute top-[-40vh] left-[46vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity'><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>

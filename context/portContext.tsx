@@ -1,7 +1,5 @@
 "use client"
 
-const PORT = "http://localhost:1337"
-
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 type portContextProps = {
@@ -11,6 +9,8 @@ type portContextProps = {
 type PortContextType = {
     PORT: string
 };
+
+const PORT = "http://localhost:1337"
 
 const initialPortContext = {
   PORT: "http://localhost:1337",
@@ -23,7 +23,6 @@ export function usePort() {
 }
 
 export function PortProvider({ children }: portContextProps) {
-  const [port, setPort] = useState<string>("http://localhost:1337");
 
   const value = {
     PORT,
