@@ -24,7 +24,7 @@ const FilmBlock = ({ id }: Props) => {
   return (
     <>
         {isLoading ? (
-          <SkeletonFilmBlock></SkeletonFilmBlock>
+          <SkeletonFilmBlock />
         ) : isSuccess ? (
           <div className="film-block w-[82vw] mx-auto flex bg-black rounded-[1rem] px-[1.4rem] py-[1.4rem]">
 
@@ -36,19 +36,19 @@ const FilmBlock = ({ id }: Props) => {
               <div>
                 <h2 className={`inline-block ${robotoMedium} text-5xl text-white mb-[1.4rem]`}>{anime?.data.attributes.title}</h2>
                 <p className="w text-2xl text-white mb-[1.2rem]">{anime?.data.attributes.description_short}</p>
-                <AboutColumnScrollY title="Серий" info={`${anime?.data.attributes.series}`}></AboutColumnScrollY>
-                <AboutColumnScrollY title="Длительность" info={`${anime?.data.attributes.time_of_series}`}></AboutColumnScrollY>
+                <AboutColumnScrollY title="Серий" info={`${anime?.data.attributes.series}`} />
+                <AboutColumnScrollY title="Длительность" info={`${anime?.data.attributes.time_of_series}`} />
               </div>
         
               <div className="flex items-end justify-between">
-                {anime && <RatingFilm rating={anime.data.attributes.rating} large={false}></RatingFilm>}
+                {anime && <RatingFilm rating={anime.data.attributes.rating} large={false} />}
                 <button className={`bg-white px-[6.2rem] py-[.7rem] rounded-[.5rem] ${robotoMedium} text-2xl text-black hover:translate-x-[1rem] ease-in-out transition-transform`}>Смотреть</button>
               </div>
             </div>
         
           </div>
         ) : (
-          <SkeletonFilmBlock></SkeletonFilmBlock>
+          <SkeletonFilmBlock />
         )}
     </>
   )

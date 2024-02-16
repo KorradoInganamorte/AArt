@@ -12,10 +12,10 @@ const CardBlock = () => {
   return (
     <>
       <div className="flex flex-col justify-center mb-[2.4rem]">
-        <CardScrollY id={isActive} isActive={isActive} setIsActive={setIsActive}></CardScrollY>
+        <CardScrollY id={isActive} isActive={isActive} setIsActive={setIsActive} />
       </div>
 
-      <FilmBlock id={isActive + 1}></FilmBlock>
+      <FilmBlock id={isActive + 1} />
     </>
   )
 }

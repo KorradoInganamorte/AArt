@@ -7,24 +7,24 @@ const FilmAboutBlock = dynamic(() => import("@/components/film/FilmAboutBlock"))
 import { robotoMedium } from "@/public/fonts"
 import "./index.sass"
 
-const page = ({ params }: { params: { id: number } }) => {
+const Page = ({ params }: { params: { id: number } }) => {
 
   const fragments = ["fragment1.webp", "fragment2.webp", "fragment3.webp", "fragment4.webp"]
 
   return (
     <div className="container_page">
         <div className="gradient pt-[1.6rem] mt-[1.2rem] rounded-[.5rem]">
-            <FilmAboutBlock id={params.id}></FilmAboutBlock>
+            <FilmAboutBlock id={params.id} />
 
             <div className="flex flex-col items-center">
                 <p className={`${robotoMedium} text-6xl text-white mb-[3.4rem]`}>Смотреть Трейлер</p>
-                <VideoPlayer></VideoPlayer>
+                <VideoPlayer />
             </div>
 
             <div className="overflow-hidden">
                 <div className="fragment-layout">
                     {fragments.map((url, i) => (
-                        <Fragment key={i} url={url}></Fragment>
+                        <Fragment key={i} url={url} />
                     ))}
                 </div>
             </div>
@@ -33,4 +33,4 @@ const page = ({ params }: { params: { id: number } }) => {
   )
 }
 
-export default page
+export default Page

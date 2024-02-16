@@ -24,7 +24,7 @@ const FilmAboutBlock = ({ id }: Props) => {
   return (
     <>
         {isLoading ? (
-          <SkeletonAboutBlock></SkeletonAboutBlock>
+          <SkeletonAboutBlock />
             ) : isSuccess ? (
              <div className="px-[2rem] mb-[5.4rem]">
                 <div className="flex">
@@ -32,7 +32,7 @@ const FilmAboutBlock = ({ id }: Props) => {
                         <img className="w-[35.2rem] h-[47.8rem] rounded-[.5rem] mb-[1.6rem]" src={`${PORT}${anime?.data.attributes.image_jpg.data.attributes.url}`} alt="film image" />
                         <Link href={`/watch/${id}`} className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[2.5rem] ml-[2.6rem] group-hover:translate-x-[1.66rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></Link>
                         <div className={`flex gap-x-[3.2rem] ${robotoMedium} text-3xl text-white`}>
-                            {anime && <RatingFilm rating={anime.data.attributes.rating} large></RatingFilm>}
+                            {anime && <RatingFilm rating={anime.data.attributes.rating} large />}
                         </div>
                     </div>
                     <div className="text-white mr-[3.6rem] monitor:mr-[8rem]">
@@ -43,24 +43,24 @@ const FilmAboutBlock = ({ id }: Props) => {
                     <div className="flex flex-col w-[26vw] mt-[4.6rem]">
                         <p className={`${robotoMedium} text-2xl text-white mb-[1.2rem]`}>Об Аниме</p>
                         <div className="flex flex-col mb-[1.8rem]">
-                            <AboutColumn title="Первый выпуск" info={`${anime?.data.attributes.first_issue}`}></AboutColumn>
-                            <AboutColumn title="Жанр" info={`${anime?.data.attributes.genre}`}></AboutColumn>
-                            <AboutColumn title="Страна" info={`${anime?.data.attributes.country}`}></AboutColumn>
-                            <AboutColumn title="Режиссер" info={`${anime?.data.attributes.producer}`}></AboutColumn>
-                            <AboutColumn title="Время серии" info={`${anime?.data.attributes.time_of_series}`}></AboutColumn>
-                            <AboutColumn title="Время" info={`${anime?.data.attributes.time_all}`}></AboutColumn>
+                            <AboutColumn title="Первый выпуск" info={`${anime?.data.attributes.first_issue}`} />
+                            <AboutColumn title="Жанр" info={`${anime?.data.attributes.genre}`} />
+                            <AboutColumn title="Страна" info={`${anime?.data.attributes.country}`} />
+                            <AboutColumn title="Режиссер" info={`${anime?.data.attributes.producer}`} />
+                            <AboutColumn title="Время серии" info={`${anime?.data.attributes.time_of_series}`} />
+                            <AboutColumn title="Время" info={`${anime?.data.attributes.time_all}`} />
                         </div>
                         <p className={`${robotoMedium} text-2xl text-white mb-[1.2rem]`}>Актеры</p>
                         <div className="flex flex-col">
                             {anime?.data.attributes.acters.map((item, i) => (
-                                <AboutColumn key={i} title={item.character} info={item.acter}></AboutColumn>
+                                <AboutColumn key={i} title={item.character} info={item.acter} />
                             ))}
                         </div>
                     </div>
                 </div>
             </div>
         ) : (
-            <SkeletonAboutBlock></SkeletonAboutBlock>
+            <SkeletonAboutBlock />
         )}
     </>
   )

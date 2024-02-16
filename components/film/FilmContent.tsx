@@ -26,7 +26,7 @@ const FilmContent = ({ id }: Props) => {
   return (
     <>
         {isLoading ? (
-            <SkeletonFilmContent></SkeletonFilmContent>
+            <SkeletonFilmContent />
         ) :  (
             <>
                 <div className="container_page translate-y-[-4rem]">

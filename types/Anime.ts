@@ -21,7 +21,7 @@ export interface AnimeOfTheYear {
     meta: {}
 }
 
-interface Data {
+export interface Data {
     id: number
     attributes: {
         title: string

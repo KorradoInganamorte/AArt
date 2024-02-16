@@ -14,7 +14,7 @@ const FilmOfTheYear = () => {
   return (
     <div className="relative flex justify-center bg-black mb-[4rem]">
         {isLoading ? (
-            <SkeletonFilmOfTheYear></SkeletonFilmOfTheYear>
+            <SkeletonFilmOfTheYear />
         ) : isSuccess ? (
             <>
                 <img className="h-[90vh] w-[100%] mx-auto bg-black" src={`${PORT}${anime?.data.attributes.img.data.attributes.url}`} alt="background anime image" />
@@ -25,7 +25,7 @@ const FilmOfTheYear = () => {
                 </div>
             </>
         ) : (
-            <SkeletonFilmOfTheYear></SkeletonFilmOfTheYear>
+            <SkeletonFilmOfTheYear />
         )}
     </div>
   )

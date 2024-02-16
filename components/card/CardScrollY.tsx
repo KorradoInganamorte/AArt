@@ -16,7 +16,7 @@ type Props = {
 
 const CardScrollY = ({ isActive, setIsActive }: Props) => {
   const { PORT } = usePort()
-  const { data: animes, isLoading } = useGetAllAnimeQuery("")
+  const { data: animes, isLoading } = useGetAllAnimeQuery({ sort: "Классические" })
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ const CardScrollY = ({ isActive, setIsActive }: Props) => {
     <div ref={containerRef} className="flex items-end overflow-x-scroll">
       {isLoading ? (
       Array.from({ length: 7 }).map((_, i) => (
-        <SkeletonScrollY key={i}></SkeletonScrollY>
+        <SkeletonScrollY key={i} />
       ))
       ) : (
         <>
