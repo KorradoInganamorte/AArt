@@ -1,9 +1,9 @@
 "use client"
 
-import dynamic from "next/dynamic"
+import Link from "next/link"
 
-const RatingFilm = dynamic(() => import("@/UI/RatingFilm"))
-const AboutColumn = dynamic(() => import("@/UI/column/AboutColumn"))
+import RatingFilm from "@/UI/RatingFilm"
+import AboutColumn from "@/UI/column/AboutColumn"
 
 import SkeletonAboutBlock from "@/UI/skeleton/SkeletonAboutBlock"
 
@@ -11,7 +11,6 @@ import { usePort } from "@/context/portContext"
 import { useGetOnesAnimeQuery } from "@/redux/services/anime"
 
 import { robotoMedium } from "@/public/fonts"
-import Link from "next/link"
 
 type Props = {
     id: number
@@ -25,7 +24,7 @@ const FilmAboutBlock = ({ id }: Props) => {
     <>
         {isLoading ? (
           <SkeletonAboutBlock />
-            ) : isSuccess ? (
+            ) : isSuccess && anime.data.attributes.rating ? (
              <div className="px-[2rem] mb-[5.4rem]">
                 <div className="flex">
                     <div className="flex flex-col w-[35.2rem] mr-[2.4rem]">

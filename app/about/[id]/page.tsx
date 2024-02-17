@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 
 const VideoPlayer = dynamic(() => import("@/components/video_player/VideoPlayer"))
-const Fragment = dynamic(() => import("@/UI/Fragment"))
+// const Fragment = dynamic(() => import("@/UI/Fragment"))
 const FilmAboutBlock = dynamic(() => import("@/components/film/FilmAboutBlock"))
 
 import { robotoMedium } from "@/public/fonts"
@@ -21,13 +21,13 @@ const Page = ({ params }: { params: { id: number } }) => {
                 <VideoPlayer />
             </div>
 
-            <div className="overflow-hidden">
+            {/* <div className="overflow-hidden">
                 <div className="fragment-layout">
                     {fragments.map((url, i) => (
                         <Fragment key={i} url={url} />
                     ))}
                 </div>
-            </div>
+            </div> */}
         </div>
     </div>
   )
