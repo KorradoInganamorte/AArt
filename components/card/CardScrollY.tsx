@@ -39,7 +39,7 @@ const CardScrollY = ({ isActive, setIsActive }: Props) => {
       ) : isSuccess ? (
         <>
           {animes?.data.map((anime, i) => (
-            <div key={i} className="flex-shrink-0 w-max h-min bg-[#2B2B2B] mx-[.9rem] mb-[.6rem] rounded-[.5rem]">
+            <div key={i} className="flex-shrink-0 w-max h-min bg-[#2B2B2B] mx-[.9rem] mb-[.6rem] rounded-[.5rem] cursor-pointer">
               <img onClick={() => handleClick(i)} className={`${isActive === i ? "w-[24.2rem] h-[32.8rem]" : "w-[20.9rem] h-[28.4rem]"} p-[.4rem] rounded-[.5rem] ease-in-out transition-all`} src={`${PORT}${anime.attributes.image_webp.data.attributes.url}`} alt="card image" />
             </div>
           ))}

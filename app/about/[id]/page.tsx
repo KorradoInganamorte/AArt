@@ -17,7 +17,7 @@ const Page = ({ params }: { params: { id: number } }) => {
             <FilmAboutBlock id={params.id} />
 
             <div className="flex flex-col items-center">
-                <p className={`${robotoMedium} text-6xl text-white mb-[3.4rem]`}>Смотреть Трейлер</p>
+                <p className={`${robotoMedium} text-4xl text-white mb-[3.4rem]`}>Смотреть Трейлер</p>
                 <VideoPlayer />
             </div>
 

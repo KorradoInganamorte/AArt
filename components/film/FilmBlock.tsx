@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-import RatingFilm from "@/UI/RatingFilm"
+import RatingFilmBlock from "@/UI/film/RatingFilmBlock"
 import AboutColumnScrollY from "@/UI/column/AboutColumnScrollY"
 
 import SkeletonFilmBlock from "@/UI/skeleton/SkeletonFilmBlock"
@@ -41,7 +41,7 @@ const FilmBlock = ({ id }: Props) => {
               </div>
         
               <div className="flex items-end justify-between">
-                {anime && <RatingFilm rating={anime.data.attributes.rating} large={false} />}
+                {anime && <RatingFilmBlock rating={anime.data.attributes.rating} />}
                 <Link href={`/about/${id}`} className={`bg-white px-[6.2rem] py-[.7rem] rounded-[.5rem] ${robotoMedium} text-2xl text-black hover:translate-x-[.66rem] ease-in-out transition-transform`}>Смотреть</Link>
               </div>
             </div>

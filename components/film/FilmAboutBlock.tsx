@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-import RatingFilm from "@/UI/RatingFilm"
+import RatingFilmAboutBlock from "@/UI/film/RatingFilmAboutBlock"
 import AboutColumn from "@/UI/column/AboutColumn"
 
 import SkeletonAboutBlock from "@/UI/skeleton/SkeletonAboutBlock"
@@ -31,7 +31,7 @@ const FilmAboutBlock = ({ id }: Props) => {
                         <img className="w-[35.2rem] h-[47.8rem] rounded-[.5rem] mb-[1.6rem]" src={`${PORT}${anime?.data.attributes.image_jpg.data.attributes.url}`} alt="film image" />
                         <Link href={`/watch/${id}`} className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[2.5rem] ml-[2.6rem] group-hover:translate-x-[1.66rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></Link>
                         <div className={`flex gap-x-[3.2rem] ${robotoMedium} text-3xl text-white`}>
-                            {anime && <RatingFilm rating={anime.data.attributes.rating} large />}
+                            {anime && <RatingFilmAboutBlock rating={anime.data.attributes.rating} />}
                         </div>
                     </div>
                     <div className="text-white mr-[3.6rem] monitor:mr-[8rem]">
