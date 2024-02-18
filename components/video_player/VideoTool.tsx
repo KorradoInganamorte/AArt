@@ -240,6 +240,9 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
       containerRef.current.addEventListener("keydown", keyDownEvent)
     }
 
+    // определение корректной серии
+    
+
     return () => {
       if (videoRef.current && containerRef.current && videoToolRef.current) {
         videoToolRef.current.removeEventListener('mouseleave', checkIsHiddenInterface);

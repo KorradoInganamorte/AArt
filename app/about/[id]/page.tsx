@@ -18,7 +18,7 @@ const Page = ({ params }: { params: { id: number } }) => {
 
             <div className="flex flex-col items-center">
                 <p className={`${robotoMedium} text-4xl text-white mb-[3.4rem]`}>Смотреть Трейлер</p>
-                <VideoPlayer />
+                <VideoPlayer id={params.id} />
             </div>
 
             {/* <div className="overflow-hidden">

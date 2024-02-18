@@ -3,8 +3,17 @@
 import { useRef } from 'react';
 
 import VideoTool from './VideoTool';
+import { useGetFilmQuery } from '@/redux/services/anime';
 
-const VideoPlayer = () => {
+type Props = {
+  id: number
+  series?: number
+}
+
+const VideoPlayer = ({ id, series }: Props) => {
+  const { data: video } = useGetFilmQuery({ id: id })
+  console.log(video)
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
