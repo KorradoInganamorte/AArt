@@ -3,7 +3,6 @@ export interface VideoSeries {
         id: number
         attributes: {
             video_series: [{
-                [id: number]: {
                     id: number
                     series: {
                         data: {
@@ -13,7 +12,7 @@ export interface VideoSeries {
                             }
                         }
                     }
-                }
+                
             }]
         }
     }

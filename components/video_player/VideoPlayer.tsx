@@ -3,23 +3,25 @@
 import { useRef } from 'react';
 
 import { useGetFilmQuery } from '@/redux/services/anime';
+import { usePort } from '@/context/portContext';
+
 import VideoTool from './VideoTool';
 
 type Props = {
   id: number
-  series?: number
+  series: number
 }
 
 const VideoPlayer = ({ id, series }: Props) => {
+  const { PORT } = usePort()
   const { data: video } = useGetFilmQuery({ id: id })
-  console.log(video)
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className='w-[100%]' tabIndex={0} ref={containerRef}>
-      <video className='w-[100%] h-[82vh] bg-black' ref={videoRef} src="/video/evangelion.short.mp4"></video>
+      <video className='w-[100%] h-[82vh] bg-black' ref={videoRef} src={`${PORT}${video?.data.attributes.video_series[series].series.data.attributes.url}`} />
       {videoRef.current && containerRef.current ? (
         <VideoTool videoRef={videoRef} containerRef={containerRef}></VideoTool>
       ) : (

@@ -24,6 +24,10 @@ const FilmContent = ({ id, series, setSeries }: Props) => {
     lists.push((i+1).toString())
   }
 
+  const nextSeriesHandleClick = () => {
+    setSeries(prev => prev + 1)
+  }
+
   return (
     <>
         {isLoading ? (
@@ -34,7 +38,7 @@ const FilmContent = ({ id, series, setSeries }: Props) => {
 
                 <div className="flex justify-between mb-[1.6rem]">
                     <p className={`${robotoMedium} text-3xl text-white`}>{anime.data.attributes.title}. {series + 1} серия</p>
-                    <button className={`flex items-center bg-white py-[.8rem] px-[1.8rem] rounded-[.5rem] ${robotoMedium} text-xl text-black group`}>Следующая серия <img className="w-[1.8rem] ml-[1rem] group-hover:translate-x-[.66rem] transition-transform" src="/images/ArrowNext.svg" alt="next series icon" /></button>
+                    {series+1 < Number(anime?.data.attributes.series.split(" ")[0]) && <button onClick={nextSeriesHandleClick} className={`flex items-center bg-white py-[.8rem] px-[1.8rem] rounded-[.5rem] ${robotoMedium} text-xl text-black group`}>Следующая серия <img className="w-[1.8rem] ml-[1rem] group-hover:translate-x-[.66rem] transition-transform" src="/images/ArrowNext.svg" alt="next series icon" /></button>}
                 </div>
 
                 <div className="bg-gray-hover-card rounded-[.5rem] mb-[4rem]">
