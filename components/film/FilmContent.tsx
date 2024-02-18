@@ -34,7 +34,7 @@ const FilmContent = ({ id, series, setSeries }: Props) => {
             <SkeletonFilmContent />
         ) : anime && (
             <>
-              <div className="container_page translate-y-[-4rem]">
+              <div className="container_page">
 
                 <div className="flex justify-between mb-[1.6rem]">
                     <p className={`${robotoMedium} text-3xl text-white`}>{anime.data.attributes.title}. {series + 1} серия</p>

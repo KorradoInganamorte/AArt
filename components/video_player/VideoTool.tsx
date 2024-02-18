@@ -6,12 +6,13 @@ import { robotoMedium } from "@/public/fonts"
 import "./videoTool.sass"
 
 type Props = {
-    className?: string
-    videoRef: RefObject<HTMLVideoElement>
-    containerRef: RefObject<HTMLDivElement>
+  series: number
+  className?: string
+  videoRef: RefObject<HTMLVideoElement>
+  containerRef: RefObject<HTMLDivElement>
 }
 
-const Video = ({ className, videoRef, containerRef }: Props) => {
+const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
   const pathname = usePathname()
 
   const [isPlayed, setIsPlayed] = useState<boolean>(true)
@@ -36,13 +37,12 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   // Изменение состояния просмотра видео (пауза/воспроизвведение)
   const handlePlayPause = () => {
+    setIsHiddenInterface(false)
     if (videoRef.current) {
-      setIsHiddenInterface(false)
-      hiddenInterfaceTimeout(videoRef.current.paused)
       if (videoRef.current.paused) {
-        setIsPlayed(false)
         iconMessagePlayPause.current?.classList.remove("opacity-100")
         iconMessagePlayPause.current?.classList.add("opacity-0")
+        setIsPlayed(false)
         videoRef.current.play();
       } else {
         iconMessagePlayPause.current?.classList.remove("opacity-0")
@@ -56,28 +56,26 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 // Показ/Скрытие VideoTool
   // MouseLeave
   const checkIsHiddenInterface = () => {
-    if(videoRef.current && !videoRef.current.paused) {
-      setIsHiddenInterface(true)
-    } else {
+    if(videoRef.current && videoRef.current.paused) {
       setIsHiddenInterface(false)
+    } else {
+      setIsHiddenInterface(true)
     }
   }
 
   // MouseOver
   const showInterface = () => {
-    // hiddenInterfaceTimeout()
-  }
+    setIsHiddenInterface(false)
 
-  const hiddenInterfaceTimeout = (paused: boolean | undefined) => {
-    if (paused) {
+    if(document.fullscreenElement && !videoRef.current?.paused) {
       const id = setTimeout(() => {
         setIsHiddenInterface(true)
         clearTimeout(id)
-      }, 3800)
-    } else {
-      setIsHiddenInterface(false)
+      }, 2400)
     }
   }
+
+  const throttleShowInterface = throttle(showInterface, 500)
 
 // Логика showTimeRef (всплывашка при перемотке видео, которая показывает время, на которое пользователь хочет перемотать)
   // Типизировать нормально event
@@ -91,6 +89,8 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
       showTimeRef.current.innerHTML = time
     }
   }
+
+  const showTimeMouseMoveThrottle = throttle(showTimeMouseMove, 20)
 
   const hideTimeMouseMove = () => {
     if(showTimeRef.current) {
@@ -114,7 +114,6 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   // функция изменение масштаба
   const toggleFullscreen = () => {
-    hiddenInterfaceTimeout(!videoRef.current?.paused)
     if (containerRef.current && videoRef.current) {
       if(document.fullscreenElement) {
         videoRef.current.className = "w-[100%] h-[82vh] bg-black"
@@ -141,17 +140,13 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
         case "ArrowRight":
           if (videoRef.current.currentTime < videoRef.current.duration - 10) {
             setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime += 10)))
-            setIsHiddenInterface(false)
             updateCurrentWidth()
-            hiddenInterfaceTimeout(!videoRef.current.paused)
           }
           break;
         case "ArrowLeft":
           if(videoRef.current.currentTime > 10) {
             setCurrentTime(formatTime(Math.ceil(videoRef.current.currentTime -= 10)))
-            setIsHiddenInterface(false)
             updateCurrentWidth()
-            hiddenInterfaceTimeout(!videoRef.current.paused)
           }
           break;
         case " ":
@@ -206,8 +201,8 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   useEffect(() => {
     // Если в localStorage есть currentTime, то мы подставляем его
-    const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
-    if (storageCurrentTime && storageCurrentTime !== "0:00" && videoRef.current && videoRef.current.currentTime) {
+    const storageCurrentTime = getFromStorage(`${pathname}/${series}/currentTime`)
+    if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
       updateCurrentWidth()
     }
@@ -221,35 +216,28 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
     // Устанавливаем duration полсе подгрузки метаданных у видео (в коде выше, при загрузке страницы может быть NaN из-за того что видео не устпело подгрузится)
     videoRef.current?.addEventListener("loadedmetadata", () => {
       setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+      updateCurrentWidth()
     })
-
-    if (videoToolRef.current) {
-      videoToolRef.current.addEventListener('mouseleave', checkIsHiddenInterface);
-    }
 
     if (videoRef.current) {
       videoRef.current.addEventListener("click", handlePlayPause)
       videoRef.current.addEventListener('timeupdate', throttledUpdateCurrentParams);
-      videoRef.current.addEventListener("mousemove", showInterface)
-      // videoRef.current.addEventListener("mouseleave", checkIsHiddenInterface)
     }
 
     // Установка фокуса на containerRef при загрузки страницы и лобавление слушителя событие на нажатие клавиш
     if (containerRef.current) {
       containerRef.current.focus({preventScroll: true})
+      containerRef.current.addEventListener("mousemove", throttleShowInterface)
+      containerRef.current.addEventListener("mouseleave", checkIsHiddenInterface)
       containerRef.current.addEventListener("keydown", keyDownEvent)
     }
 
-    // определение корректной серии
-    
-
     return () => {
       if (videoRef.current && containerRef.current && videoToolRef.current) {
-        videoToolRef.current.removeEventListener('mouseleave', checkIsHiddenInterface);
         videoRef.current.removeEventListener('click', handlePlayPause);
         videoRef.current.removeEventListener('timeupdate', throttledUpdateCurrentParams);
-        videoRef.current.removeEventListener("mousemove", checkIsHiddenInterface)
-        containerRef.current.removeEventListener("mouseover", showInterface)
+        containerRef.current.removeEventListener("mousemove", throttleShowInterface)
+        containerRef.current.removeEventListener("mouseleave", checkIsHiddenInterface)
         containerRef.current.removeEventListener("keydown", keyDownEvent)
       }
     };
@@ -257,7 +245,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   useEffect(() => {
     // Добавление каждую секунду в localstorage currentTime
-    setToStorage(`${pathname}/currentTime`, videoRef.current?.currentTime)
+    setToStorage(`${pathname}/${series}/currentTime`, videoRef.current?.currentTime)
 
     // Изменение длины currentTimeLineRef каждую секунду на нужное значение (currentTime)
     if (currentTimeLineRef.current) {
@@ -267,9 +255,9 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
 
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
-      <div ref={iconMessagePlayPause} className='absolute top-[-40vh] left-[46vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity'><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>
+      <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity`}><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
-      <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMove} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
+      <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMoveThrottle} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
         <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
         <div className="w-[100%] h-[.1rem] bg-gray pointer-events-none"></div>
       </div>
@@ -283,7 +271,7 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
             <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 
-          <p className={`${robotoMedium} text-lg text-white`}>{duration !== "0:00" && currentTime ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
+          <p className={`${robotoMedium} text-lg text-white`}>{(duration !== "0:00" && currentTime && !Number.isNaN(duration) && !Number.isNaN(currentTime)) ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
         </div>
 
         <button onClick={handleFullScreenChange} className='w-[2.2rem] h-[2.2rem]'><img src="/images/FullScreen.svg" alt="full screen button" /></button>
@@ -292,4 +280,4 @@ const Video = ({ className, videoRef, containerRef }: Props) => {
   )
 }
 
-export default Video
+export default VideoTool

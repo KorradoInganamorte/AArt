@@ -5,7 +5,7 @@ import "@/components/video_player/videoTool.sass"
 const SkeletonFilmContent = () => {
   return (
     <>
-    <div className="container_page translate-y-[-4rem]">
+    <div className="container_page">
 
         <div className="flex justify-between mb-[1.6rem]">
             <div className="w-[28.2rem] h-[3rem] bg-gray-hover-card rounded-[.5rem]"></div>
