@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 
-import VideoTool from './VideoTool';
 import { useGetFilmQuery } from '@/redux/services/anime';
+import VideoTool from './VideoTool';
 
 type Props = {
   id: number

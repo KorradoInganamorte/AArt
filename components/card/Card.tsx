@@ -18,7 +18,6 @@ type Props = {
 const Card = ({ active, searchQuery }: Props) => {
   const { PORT } = usePort()
   const { data: animes, isLoading, isSuccess } = useGetAllAnimeQuery({ sort: active })
-  console.log("render")
 
   return (
     <>

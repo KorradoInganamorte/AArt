@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useGetAllAnimeQuery } from "@/redux/services/anime";
 
-import { Data } from "@/types/Anime";
+import { Data } from "@/types/Meta";
 
 import { robotoMedium } from "@/public/fonts";
 
