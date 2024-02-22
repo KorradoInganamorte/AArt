@@ -1,8 +1,6 @@
 "use client"
 
-// import { usePathname } from "next/navigation"
-// import { useRouter } from "next/navigation"
-import { Dispatch, SetStateAction } from "react"
+import { useRouter } from "next/navigation"
 
 import { useGetOnesAnimeQuery } from "@/redux/services/anime"
 
@@ -13,18 +11,13 @@ import { robotoMedium } from "@/public/fonts"
 import "./filmContent.sass"
 
 type Props = {
-    id: number
-    series: number
-    setSeries: Dispatch<SetStateAction<number>>
+    id: string
+    series: string
 }
 
-const FilmContent = ({ id, series, setSeries }: Props) => {
-  // const pathName = usePathname()
-  // console.log(pathName.split("/")[pathName.split("/").length - 1])
+const FilmContent = ({ id, series }: Props) => {
   const { data: anime, isLoading } = useGetOnesAnimeQuery({ id: id })
-  // console.log(redirect("dfv"))
-  // const router = useRouter()
-  // console.log(router)
+  const router = useRouter()
 
   const lists = []
   for (let i = 0; i < Number(anime?.data.attributes.series.split(" ")[0]); i++) {
@@ -32,7 +25,7 @@ const FilmContent = ({ id, series, setSeries }: Props) => {
   }
 
   const nextSeriesHandleClick = () => {
-    setSeries(prev => prev + 1)
+    router.push((series).toString())
   }
 
   return (
@@ -44,8 +37,8 @@ const FilmContent = ({ id, series, setSeries }: Props) => {
               <div className="container_page">
 
                 <div className="flex justify-between mb-[1.6rem]">
-                    <p className={`${robotoMedium} text-3xl text-white`}>{anime.data.attributes.title}. {series + 1} серия</p>
-                    {series+1 < Number(anime?.data.attributes.series.split(" ")[0]) && <button onClick={nextSeriesHandleClick} className={`flex items-center bg-white py-[.8rem] px-[1.8rem] rounded-[.5rem] ${robotoMedium} text-xl text-black group`}>Следующая серия <img className="w-[1.8rem] ml-[1rem] group-hover:translate-x-[.66rem] transition-transform" src="/images/ArrowNext.svg" alt="next series icon" /></button>}
+                    <p className={`${robotoMedium} text-3xl text-white`}>{anime.data.attributes.title}. {series} серия</p>
+                    {Number(series) < Number(anime?.data.attributes.series.split(" ")[0]) && <button onClick={nextSeriesHandleClick} className={`flex items-center bg-white py-[.8rem] px-[1.8rem] rounded-[.5rem] ${robotoMedium} text-xl text-black group`}>Следующая серия <img className="w-[1.8rem] ml-[1rem] group-hover:translate-x-[.66rem] transition-transform" src="/images/ArrowNext.svg" alt="next series icon" /></button>}
                 </div>
 
                 <div className="bg-gray-hover-card rounded-[.5rem] mb-[4rem]">
@@ -57,7 +50,7 @@ const FilmContent = ({ id, series, setSeries }: Props) => {
                     <div className="h-[0.1rem] bg-white mb-[1.6rem]"></div>
 
                     <div className="series-layout">
-                        <SeriesFilterBtn lists={lists} series={series} setSeries={setSeries} />
+                        <SeriesFilterBtn lists={lists} id={id} series={series} />
                     </div>
 
                 </div>

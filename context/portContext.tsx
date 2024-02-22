@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 
 type portContextProps = {
   children: ReactNode;
@@ -10,10 +10,16 @@ type PortContextType = {
     PORT: string
 };
 
-const PORT = "http://localhost:1337"
+let PORT = "http://localhost:1337"
+
+if (process.env.NODE_ENV === 'production') {
+  PORT = "https://strapi.animeaart.ru"
+} else {
+  PORT = "http://localhost:1337"
+}
 
 const initialPortContext = {
-  PORT: "http://localhost:1337",
+  PORT,
 };
 
 const PortContext = createContext<PortContextType>(initialPortContext);

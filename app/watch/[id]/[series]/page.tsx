@@ -1,19 +1,14 @@
-"use client"
-
 import dynamic from "next/dynamic"
-import { useState } from "react"
 
 const FilmContent = dynamic(() => import("@/components/film/FilmContent"))
+const VideoPlayer = dynamic(() => import("@/components/video_player/VideoPlayer"))
 
-import VideoPlayer from "@/components/video_player/VideoPlayer"
-
-const Page = ({ params }: { params: { id: number, series: number } }) => {
-  const [series, setSeries] = useState<number>(0)
+const Page = ({ params }: { params: { id: string, series: string } }) => {
 
   return (
     <>
       <VideoPlayer id={params.id} series={params.series} />
-      <FilmContent id={params.id} series={series} setSeries={setSeries} />
+      <FilmContent id={params.id} series={params.series} />
     </>
   )
 }

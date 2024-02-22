@@ -22,6 +22,7 @@ export interface Data {
         videoURL: string
         video_trailer: Media
         video: Media
+        url_yandex_object: string
     }
 }
 

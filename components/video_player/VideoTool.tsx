@@ -1,19 +1,20 @@
-import { RefObject, useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
+import { RefObject, useEffect, useRef, useState } from "react"
+
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
+
+import Loader from "@/UI/Loader"
 
 import { robotoMedium } from "@/public/fonts"
 import "./videoTool.sass"
-import Loader from "@/UI/Loader"
 
 type Props = {
-  series: number
   className?: string
   videoRef: RefObject<HTMLVideoElement>
   containerRef: RefObject<HTMLDivElement>
 }
 
-const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
+const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   const pathname = usePathname()
 
   const [isPlayed, setIsPlayed] = useState<boolean>(true)
@@ -203,7 +204,7 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
 // loader (когда видео не подгрузилось/не подгрузилось)
   const videoIsWaiting = () => {
     if (loaderRef.current) {
-      loaderRef.current.style.display = "block"
+      loaderRef.current.style.display = "flex"
     }
   }
 
@@ -215,7 +216,7 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
 
   useEffect(() => {
     // Если в localStorage есть currentTime, то мы подставляем его
-    const storageCurrentTime = getFromStorage(`${pathname}/${series}/currentTime`)
+    const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
     if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
     }
@@ -262,7 +263,7 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
 
   useEffect(() => {
     // Добавление каждую секунду в localstorage currentTime
-    setToStorage(`${pathname}/${series}/currentTime`, videoRef.current?.currentTime)
+    setToStorage(`${pathname}/currentTime`, videoRef.current?.currentTime)
 
     // Изменение длины currentTimeLineRef каждую секунду на нужное значение (currentTime)
     if (currentTimeLineRef.current) {
@@ -272,10 +273,10 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
 
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
-      <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] hidden items-center justify-center z-[2] w-[8.4rem] h-[8.4rem]">
+      <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem]">
         <Loader />
       </div>
-      <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]  ease-in transition-opacity`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>
+      <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
       <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMoveThrottle} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
         <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>

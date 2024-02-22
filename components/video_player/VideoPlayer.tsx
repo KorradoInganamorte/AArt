@@ -3,19 +3,17 @@
 import Head from 'next/head';
 import { useRef } from 'react';
 
-import { useGetFilmQuery } from '@/redux/services/anime';
-import { usePort } from '@/context/portContext';
+import { useGetOnesAnimeQuery } from '@/redux/services/anime';
 
 import VideoTool from './VideoTool';
 
 type Props = {
-  id: number
-  series: number
+  id: string
+  series: string
 }
 
 const VideoPlayer = ({ id, series }: Props) => {
-  const { PORT } = usePort()
-  const { data: video } = useGetFilmQuery({ id: id })
+  const { data: anime } = useGetOnesAnimeQuery({ id: id })
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,12 +24,12 @@ const VideoPlayer = ({ id, series }: Props) => {
         <link rel="preload" as="image" href="/images/Play.svg"/>
         <link rel="preload" as="image" href="/images/Pause.svg"/>
       </Head>
-      <video className=' relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`https://storage.yandexcloud.net/aart/evangelion/evangelion.ep${series}.mp4`} />
+      <video className='relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`https://storage.yandexcloud.net/aart/${anime?.data.attributes.url_yandex_object}/evangelion.ep${series}.mp4`} />
       {videoRef.current && containerRef.current ? (
-        <VideoTool series={series} videoRef={videoRef} containerRef={containerRef}></VideoTool>
+        <VideoTool videoRef={videoRef} containerRef={containerRef}></VideoTool>
       ) : (
         // статическая разметка с которой нельзя взаимодействовать пока не загрузится 
-        <VideoTool series={0} className='cursor-not-allowed' videoRef={videoRef} containerRef={containerRef}></VideoTool>
+        <VideoTool className='cursor-not-allowed' videoRef={videoRef} containerRef={containerRef}></VideoTool>
       )}
     </div>
   );
