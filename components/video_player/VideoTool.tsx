@@ -42,13 +42,13 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
     setIsHiddenInterface(false)
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        iconMessagePlayPause.current?.classList.remove("opacity-100")
-        iconMessagePlayPause.current?.classList.add("opacity-0")
+        iconMessagePlayPause.current?.classList.remove("flex")
+        iconMessagePlayPause.current?.classList.add("hidden")
         setIsPlayed(false)
         videoRef.current.play();
       } else {
-        iconMessagePlayPause.current?.classList.remove("opacity-0")
-        iconMessagePlayPause.current?.classList.add("opacity-100")
+        iconMessagePlayPause.current?.classList.remove("hidden")
+        iconMessagePlayPause.current?.classList.add("flex")
         setIsPlayed(true)
         videoRef.current.pause();
       }
@@ -208,7 +208,6 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
   }
 
   const videoIsCanPlay = () => {
-    
     if (loaderRef.current) {
       loaderRef.current.style.display = "none"
     }
@@ -217,21 +216,21 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
   useEffect(() => {
     // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage(`${pathname}/${series}/currentTime`)
+    console.log(storageCurrentTime)
     if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
-      console.log("useEffect", storageCurrentTime, videoRef.current.currentTime, videoRef.current.duration)
     }
 
     // устанавливаем currentTime сразу при загрузки страницы если оно есть
     if (videoRef.current) {
-      updateCurrentTime()
+      updateCurrentParams()
+      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
     }
 
     // Устанавливаем duration полсе подгрузки метаданных у видео
     videoRef.current?.addEventListener("loadedmetadata", () => {
-      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
-      console.log(videoRef.current?.duration, videoRef.current?.currentTime)
-      updateCurrentWidth()
+      updateCurrentParams()
+      // setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
     })
 
     if (videoRef.current) {
@@ -277,7 +276,7 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
       <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] flex items-center justify-center z-[2] w-[8.4rem] h-[8.4rem]">
         <Loader />
       </div>
-      <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] flex items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%] opacity-0 ease-in transition-opacity`}><img className={`${isPlayed ? "w-[3.2rem] h-[3.2rem] translate-x-[.4rem]" : "w-[3.2rem] h-[3.8rem]"}`} src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause message icon" /></div>
+      <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]  ease-in transition-opacity`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
       <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMoveThrottle} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
         <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>

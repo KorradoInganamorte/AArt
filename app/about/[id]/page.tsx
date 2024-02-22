@@ -9,7 +9,7 @@ import "./index.sass"
 
 const Page = ({ params }: { params: { id: number } }) => {
 
-  const fragments = ["fragment1.webp", "fragment2.webp", "fragment3.webp", "fragment4.webp"]
+//   const fragments = ["fragment1.webp", "fragment2.webp", "fragment3.webp", "fragment4.webp"]
 
   return (
     <div className="container_page">

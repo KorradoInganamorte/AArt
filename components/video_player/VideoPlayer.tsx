@@ -1,5 +1,6 @@
 "use client"
 
+import Head from 'next/head';
 import { useRef } from 'react';
 
 import { useGetFilmQuery } from '@/redux/services/anime';
@@ -21,7 +22,11 @@ const VideoPlayer = ({ id, series }: Props) => {
 
   return (
     <div className='w-[100%] h-[82vh] mb-[2rem]' tabIndex={0} ref={containerRef}>
-      <video className='w-[100%] h-[82vh] bg-black' ref={videoRef} src={`${PORT}${video?.data.attributes.video_series[series].series.data.attributes.url}`} />
+      <Head>
+        <link rel="preload" as="image" href="/images/Play.svg"/>
+        <link rel="preload" as="image" href="/images/Pause.svg"/>
+      </Head>
+      <video className=' relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`${PORT}${video?.data.attributes.video_series[series].series.data.attributes.url}`} />
       {videoRef.current && containerRef.current ? (
         <VideoTool series={series} videoRef={videoRef} containerRef={containerRef}></VideoTool>
       ) : (
