@@ -13,7 +13,7 @@ import { useGetOnesAnimeQuery } from "@/redux/services/anime"
 import { robotoMedium } from "@/public/fonts"
 
 type Props = {
-    id: number
+    id: string
 }
 
 const FilmAboutBlock = ({ id }: Props) => {

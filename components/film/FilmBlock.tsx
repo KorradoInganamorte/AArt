@@ -14,7 +14,7 @@ import { robotoMedium } from "@/public/fonts"
 import "./filmBlock.sass"
 
 type Props = {
-    id: number
+    id: string
 }
 
 const FilmBlock = ({ id }: Props) => {

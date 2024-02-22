@@ -14,7 +14,7 @@ const CardBlock = () => {
         <CardScrollY id={isActive} isActive={isActive} setIsActive={setIsActive} />
       </div>
 
-      <FilmBlock id={isActive + 1} />
+      <FilmBlock id={(isActive + 1).toString()} />
     </>
   )
 }
