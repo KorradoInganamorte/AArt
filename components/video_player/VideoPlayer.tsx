@@ -26,7 +26,7 @@ const VideoPlayer = ({ id, series }: Props) => {
         <link rel="preload" as="image" href="/images/Play.svg"/>
         <link rel="preload" as="image" href="/images/Pause.svg"/>
       </Head>
-      <video className=' relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`${PORT}${video?.data.attributes.video_series[series].series.data.attributes.url}`} />
+      <video className=' relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`https://storage.yandexcloud.net/aart/evangelion/evangelion.ep${series}.mp4`} />
       {videoRef.current && containerRef.current ? (
         <VideoTool series={series} videoRef={videoRef} containerRef={containerRef}></VideoTool>
       ) : (

@@ -216,7 +216,6 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
   useEffect(() => {
     // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage(`${pathname}/${series}/currentTime`)
-    console.log(storageCurrentTime)
     if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
       videoRef.current.currentTime = Number(storageCurrentTime)
     }
@@ -230,7 +229,7 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
     // Устанавливаем duration полсе подгрузки метаданных у видео
     videoRef.current?.addEventListener("loadedmetadata", () => {
       updateCurrentParams()
-      // setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
     })
 
     if (videoRef.current) {
@@ -273,7 +272,7 @@ const VideoTool = ({ series, className, videoRef, containerRef }: Props) => {
 
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
-      <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] flex items-center justify-center z-[2] w-[8.4rem] h-[8.4rem]">
+      <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] hidden items-center justify-center z-[2] w-[8.4rem] h-[8.4rem]">
         <Loader />
       </div>
       <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]  ease-in transition-opacity`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>

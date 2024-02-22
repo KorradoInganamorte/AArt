@@ -1,5 +1,7 @@
 "use client"
 
+// import { usePathname } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
 
 import { useGetOnesAnimeQuery } from "@/redux/services/anime"
@@ -17,7 +19,12 @@ type Props = {
 }
 
 const FilmContent = ({ id, series, setSeries }: Props) => {
+  // const pathName = usePathname()
+  // console.log(pathName.split("/")[pathName.split("/").length - 1])
   const { data: anime, isLoading } = useGetOnesAnimeQuery({ id: id })
+  // console.log(redirect("dfv"))
+  // const router = useRouter()
+  // console.log(router)
 
   const lists = []
   for (let i = 0; i < Number(anime?.data.attributes.series.split(" ")[0]); i++) {
