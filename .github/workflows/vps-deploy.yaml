@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_USERNAME_PASSWORD }}
         key: ${{ secrets.SSH_SECRET_KEY }}
-        script:
+        script: |
           cd /var/www/nextjs/AArt
           sudo git pull origin main
           sudo npm install
