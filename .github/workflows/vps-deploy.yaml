@@ -1,0 +1,27 @@
+name: CD to VPS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: SSH Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          cd /var/www/nextjs/AArt
+          git pull origin master
+          npm install
+          npm run build
+          pm2 restart all
