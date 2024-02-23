@@ -9,19 +9,16 @@ export interface Data {
         description_short: string
         first_issue: string
         genre: string
+        category: string
         country: string
-        producer: string
+        director: string
         series: string
         time_of_series: string
         time_all: string
         acters: Acters[]
         rating: Ratings[]
-        category: string
         image_webp: Media
-        image_jpg: Media
-        videoURL: string
-        video_trailer: Media
-        video: Media
+        image_webp3x: Media
         url_yandex_object: string
     }
 }

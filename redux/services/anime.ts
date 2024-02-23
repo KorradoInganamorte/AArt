@@ -16,11 +16,8 @@ export const animeApi = createApi({
     }),
     getAnimeOfTheYear: builder.query<AnimeOfTheYear, string>({
       query: () =>  `/api/anime-of-the-year?fields[0]=title&fields[1]=description&fields[2]=url&populate[img][fields][0]=name&populate[img][fields][1]=url`
-    }),
-    getFilm: builder.query<VideoSeries, {id: string}>({
-      query: ({ id }) =>  `/api/animes/${id}?fields[0]&populate[video_series][populate][series][fields][0]=url`
     })
   }),
 })
 
-export const { useGetAllAnimeQuery, useGetOnesAnimeQuery, useGetAnimeOfTheYearQuery, useGetFilmQuery } = animeApi
+export const { useGetAllAnimeQuery, useGetOnesAnimeQuery, useGetAnimeOfTheYearQuery } = animeApi

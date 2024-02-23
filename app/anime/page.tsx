@@ -5,7 +5,7 @@ import { useState } from "react"
 
 const FilterBtn = dynamic(() => import("@/UI/button/FilterBtn"))
 const Card = dynamic(() => import("@/components/card/Card"))
-const SearchFilmBar = dynamic(() => import("@/components/SearchFilmBar"))
+const SearchFilmBar = dynamic(() => import("@/components/film/SearchFilmBar"))
 
 import "./index.sass"
 
