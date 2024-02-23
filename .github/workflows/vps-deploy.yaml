@@ -22,8 +22,8 @@ jobs:
         key: ${{ secrets.SSH_SECRET_KEY }}
         script: |
           cd /var/www/nextjs/AArt
-          sudo git pull origin main
-          sudo npm install
-          sudo rm -rf .next
-          sudo npm run build
+          git pull origin main
+          npm install
+          rm -rf .next
+          npm run build
           pm2 restart all
