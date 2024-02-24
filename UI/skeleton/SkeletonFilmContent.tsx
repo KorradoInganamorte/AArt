@@ -9,7 +9,7 @@ const SkeletonFilmContent = () => {
 
         <div className="flex justify-between mb-[1.6rem]">
             <div className="w-[28.2rem] h-[3rem] bg-gray-hover-card rounded-[.5rem]"></div>
-            <div className="w-[22.6rem] h-[3.8rem] bg-gray-hover-card rounded-[.5rem]"></div>
+            <div className="w-[22.8rem] h-[3.8rem] bg-gray-hover-card rounded-[.5rem]"></div>
         </div>
 
         <div className="w-[100%] h-[15.9rem] bg-gray-hover-card rounded-[.5rem] mb-[4rem]"></div>

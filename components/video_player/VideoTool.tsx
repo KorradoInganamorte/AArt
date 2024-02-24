@@ -272,7 +272,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   }, [videoRef.current?.currentTime])
 
   return (
-    <div ref={videoToolRef} className={`${className} translate-y-[-5.6rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
+    <div ref={videoToolRef} className={`${className} translate-y-[-5.2rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
       <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem]">
         <Loader />
       </div>
@@ -282,7 +282,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
         <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
         <div className="w-[100%] h-[.1rem] bg-gray pointer-events-none"></div>
       </div>
-      <div className='flex items-center justify-between w-[100%] py-[.6rem] px-[3rem] bg-black/30'>
+      <div className='flex items-center justify-between w-[100%] py-[.4rem] px-[2rem] bg-black/30'>
         
         <div className='flex items-center'>
           <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
@@ -295,7 +295,8 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
           <p className={`${robotoMedium} text-lg text-white`}>{(duration !== "0:00" && currentTime && !Number.isNaN(duration) && !Number.isNaN(currentTime)) ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
         </div>
 
-        <button onClick={handleFullScreenChange} className='w-[2.2rem] h-[2.2rem]'><img src="/images/FullScreen.svg" alt="full screen button" /></button>
+        <button onClick={handleFullScreenChange} className='flex items-center justify-center w-[3.6rem] h-[2.4rem]'><img className="w-[2.2rem] h-[2.2rem]" src="/images/FullScreen.svg" alt="full screen button" /></button>
+      
       </div>
     </div>
   )
