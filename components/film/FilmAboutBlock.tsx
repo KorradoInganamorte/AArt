@@ -24,7 +24,7 @@ const FilmAboutBlock = ({ id }: Props) => {
     <>
         {isLoading ? (
           <SkeletonAboutBlock />
-            ) : isSuccess && anime.data.attributes.rating ? (
+            ) : isSuccess ? (
              <div className="px-[2rem] mb-[5.4rem]">
                 <div className="flex">
                     <div className="flex flex-col w-[35.2rem] mr-[2.4rem]">
