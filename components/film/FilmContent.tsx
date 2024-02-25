@@ -50,7 +50,7 @@ const FilmContent = ({ id, series }: Props) => {
                     <div className="h-[0.1rem] bg-white mb-[1.6rem]"></div>
 
                     <div className="series-layout">
-                        <SeriesFilterBtn lists={lists} id={id} series={series} />
+                        <SeriesFilterBtn lists={lists} series={series} />
                     </div>
 
                 </div>

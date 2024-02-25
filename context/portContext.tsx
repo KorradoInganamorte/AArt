@@ -2,7 +2,7 @@
 
 import { createContext, useContext, ReactNode } from 'react';
 
-type portContextProps = {
+type PortContextProps = {
   children: ReactNode;
 };
 
@@ -28,7 +28,7 @@ export function usePort() {
   return useContext(PortContext);
 }
 
-export function PortProvider({ children }: portContextProps) {
+export function PortProvider({ children }: PortContextProps) {
 
   const value = {
     PORT,

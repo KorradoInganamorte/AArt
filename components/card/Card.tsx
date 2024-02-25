@@ -31,7 +31,7 @@ const Card = ({ active, searchQuery }: Props) => {
         isSuccess ? (
           <>
             {animes.data.length > 0 ? animes?.data.filter(anime => anime.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())).map((anime) => (
-              <Link href={`/about/${anime.id}`} key={anime.id} className={`w-max h-max px-[.8rem] py-[.6rem] pb-[1.8rem] rounded-[.8rem] hover:bg-black hover:translate-y-[-.66rem] cursor-pointer ease-in-out transition-all`}>
+              <Link href={`/about/${anime.id}`} key={anime.id} className={`w-max h-max px-[.8rem] py-[.6rem] pb-[1.8rem] rounded-[.8rem] hover:bg-black hover:translate-y-[-.6rem] cursor-pointer ease-in-out transition-colors`}>
                 <div className="w-max bg-[#2B2B2B] rounded-[.5rem]">
                   <img className="w-[20.9rem] h-[28.4rem] p-[.4rem] mb-[.8rem] rounded-[.5rem]" src={`${PORT}${anime.attributes.image_webp.data.attributes.url}`} alt="card image" />
                 </div>

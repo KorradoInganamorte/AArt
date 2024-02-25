@@ -28,16 +28,16 @@ const SearchFilmBar = ({ setSearchQuery }: Props) => {
     }
 
     const handleClickOutside = (e: any) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        if (!dropdownRef.current?.contains(e.target)) {
           setShowDropdown(false);
         }
     };
     
     useEffect(() => {
-        window.addEventListener("click", handleClickOutside);
+        document.addEventListener("click", handleClickOutside);
 
         return () => {
-            window.removeEventListener("click", handleClickOutside);
+            document.removeEventListener("click", handleClickOutside);
         };
     }, []);
 

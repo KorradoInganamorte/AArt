@@ -4,11 +4,10 @@ import { robotoMedium } from "@/public/fonts"
 
 type Props = {
     lists: string[]
-    id: string
     series: string
 }
 
-const SeriesFilterBtn = ({ lists, id, series }: Props) => {
+const SeriesFilterBtn = ({ lists, series }: Props) => {
     const router = useRouter()
 
     const handleClick = (i: number) => {

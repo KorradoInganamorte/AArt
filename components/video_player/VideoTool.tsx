@@ -1,7 +1,10 @@
 import { usePathname } from "next/navigation"
-import { RefObject, useEffect, useRef, useState } from "react"
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react"
 
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
+
+import VideoListSetting from "./VideoListSetting"
+import VideoQualitySetting from "./VideoQualitySetting"
 
 import Loader from "@/UI/Loader"
 
@@ -12,9 +15,10 @@ type Props = {
   className?: string
   videoRef: RefObject<HTMLVideoElement>
   containerRef: RefObject<HTMLDivElement>
+  setCurrentQuality: Dispatch<SetStateAction<string>>
 }
 
-const VideoTool = ({ className, videoRef, containerRef }: Props) => {
+const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Props) => {
   const pathname = usePathname()
 
   const [isPlayed, setIsPlayed] = useState<boolean>(true)
@@ -30,6 +34,15 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   const timeLineRef = useRef<HTMLInputElement>(null)
   const currentTimeLineRef = useRef<HTMLDivElement>(null)
   const showTimeRef = useRef<HTMLDivElement>(null)
+  const settingsButtonRef = useRef<HTMLButtonElement>(null)
+  const settingsInterfaceRef = useRef<HTMLDivElement>(null)
+  const qualitySettngsInterfaceRef = useRef<HTMLDivElement>(null)
+
+  const [showSettingsInterface, setShowSettingsInterface] = useState<boolean>(false)
+  const [showQualitySettingsInterface, setShowQualitySettingsInterface] = useState<boolean>(false)
+
+  const quality = ["1080", "720", "480", "360"]
+  const [qualityActive, setQualityActive] = useState<number>(1)
 
   // Изменение громкости видео
   const handleVolumeChange = (value: number) => {
@@ -214,7 +227,46 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
     }
   }
 
+// settings
+  const handleSettingsClickOutside = (e: any) => {
+    e.preventDefault()
+    if (!settingsInterfaceRef.current?.contains(e.target) && !settingsButtonRef.current?.contains(e.target) && !qualitySettngsInterfaceRef.current?.contains(e.target)) {
+      setShowSettingsInterface(false)
+      // settingsInterfaceRef.current?.classList.remove("absolute")
+      // settingsInterfaceRef.current?.classList.add("hidden")
+    }
+  };
+
+  const handleVisibleSettingInterface = () => {
+    if (settingsInterfaceRef.current) {
+      setShowSettingsInterface(!showSettingsInterface)
+      // if (settingsInterfaceRef.current.classList.contains("hidden")) {
+      //   settingsInterfaceRef.current.classList.remove("hidden")
+      //   settingsInterfaceRef.current.classList.add("absolute")
+      // } else if (settingsInterfaceRef.current.classList.contains("absolute")) {
+      //   settingsInterfaceRef.current.classList.remove("absolute")
+      //   settingsInterfaceRef.current.classList.add("hidden")
+      // }
+    }
+  }
+
+  const backToSettingsInterface = (set: (value: SetStateAction<boolean>) => void, ref: RefObject<HTMLDivElement>) => {
+    if (settingsInterfaceRef.current && ref.current) {
+      setShowSettingsInterface(true)
+      set(false)
+    }
+  }
+
+  const goToSubSettingsInterface = (set: (value: SetStateAction<boolean>) => void, ref: RefObject<HTMLDivElement>) => {
+    if (settingsInterfaceRef.current && ref.current) {
+      setShowSettingsInterface(false)
+      set(true)
+    }
+  }
+
   useEffect(() => {
+    console.log("use effect")
+
     // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
     if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
@@ -248,6 +300,8 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
       containerRef.current.addEventListener("keydown", keyDownEvent)
     }
 
+    document.addEventListener("click", handleSettingsClickOutside);
+
     return () => {
       if (videoRef.current && containerRef.current && videoToolRef.current) {
         videoRef.current.removeEventListener('click', handlePlayPause);
@@ -257,6 +311,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
         containerRef.current.removeEventListener("mousemove", throttleShowInterface)
         containerRef.current.removeEventListener("mouseleave", checkIsHiddenInterface)
         containerRef.current.removeEventListener("keydown", keyDownEvent)
+        document.removeEventListener("click", handleSettingsClickOutside);
       }
     };
   }, [])
@@ -271,17 +326,46 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
     }
   }, [videoRef.current?.currentTime])
 
+  useEffect(() => {
+    if (videoRef.current) {
+      const currentTime = videoRef.current.currentTime
+      setCurrentQuality(quality[qualityActive])
+      videoRef.current.load()
+      videoRef.current.currentTime = currentTime
+    }
+  }, [qualityActive])
+
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.2rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
-      <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem]">
-        <Loader />
+      
+      <div ref={loaderRef} className="absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem]"><Loader /></div>
+      
+      <div ref={settingsInterfaceRef} className={`${showSettingsInterface ? "absolute" : "hidden"} right-[.8rem] bottom-[5.2rem] w-[36.2rem] bg-gray-hover-card/80 py-[1rem] rounded-[.5rem]`}>
+        <div onClick={() => goToSubSettingsInterface(setShowQualitySettingsInterface, qualitySettngsInterfaceRef)}>
+          <VideoListSetting title="Разрешение" value={`${quality[qualityActive]}p`} />
+        </div>
       </div>
+
+      <VideoQualitySetting 
+        lists={quality}
+        qualityActive={qualityActive}
+        setQualityActive={setQualityActive}
+        showQualitySettingsInterface={showQualitySettingsInterface}
+        setShowQualitySettingsInterface={setShowQualitySettingsInterface}
+        settingsInterfaceRef={settingsInterfaceRef}
+        qualitySettngsInterfaceRef={qualitySettngsInterfaceRef}
+        backToSettingsInterface={backToSettingsInterface} 
+      />
+      
       <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>
+      
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
+      
       <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMoveThrottle} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
-        <div ref={currentTimeLineRef} className="w-[0%] h-[.2rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
-        <div className="w-[100%] h-[.1rem] bg-gray pointer-events-none"></div>
+        <div ref={currentTimeLineRef} className="w-[0%] h-[.3rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
+        <div className="w-[100%] h-[.3rem] bg-gray pointer-events-none"></div>
       </div>
+
       <div className='flex items-center justify-between w-[100%] py-[.4rem] px-[2rem] bg-black/30'>
         
         <div className='flex items-center'>
@@ -295,7 +379,10 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
           <p className={`${robotoMedium} text-lg text-white`}>{(duration !== "0:00" && currentTime && !Number.isNaN(duration) && !Number.isNaN(currentTime)) ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>
         </div>
 
-        <button onClick={handleFullScreenChange} className='flex items-center justify-center w-[3.6rem] h-[2.4rem]'><img className="w-[2.2rem] h-[2.2rem]" src="/images/FullScreen.svg" alt="full screen button" /></button>
+        <div className="flex">
+          <button ref={settingsButtonRef} onClick={handleVisibleSettingInterface} className="flex items-center justify-center w-[3.6rem] h-[2.4rem] mr-[1.1rem] cursor-pointer"><img className="w-[2.4rem] h-[2.4rem]" src="/images/VideoSettings.svg" alt="video settings" /></button>
+          <button onClick={handleFullScreenChange} className='flex items-center justify-center w-[3.6rem] h-[2.4rem]'><img className="w-[2.2rem] h-[2.2rem]" src="/images/FullScreen.svg" alt="full screen button" /></button>
+        </div>
       
       </div>
     </div>
