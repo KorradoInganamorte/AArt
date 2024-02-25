@@ -8,7 +8,7 @@ const SkeletonFilmContent = () => {
     <div className="container_page">
 
         <div className="flex justify-between mb-[1.6rem]">
-            <div className="w-[28.2rem] h-[3rem] bg-gray-hover-card rounded-[.5rem]"></div>
+            <div className="w-[37.2rem] h-[3rem] bg-gray-hover-card rounded-[.5rem]"></div>
             <div className="w-[22.8rem] h-[3.8rem] bg-gray-hover-card rounded-[.5rem]"></div>
         </div>
 
