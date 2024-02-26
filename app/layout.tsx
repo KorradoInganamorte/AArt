@@ -15,6 +15,7 @@ import Footer from '@/components/Footer'
 
 import { ReduxProvider } from '@/redux/ReduxProvider'
 import { PortProvider } from '@/context/portContext'
+import { QualityProvider } from '@/context/qualityContext'
 
 export const metadata: Metadata = {
   title: 'Anime',
@@ -32,7 +33,9 @@ export default function RootLayout({
         <ReduxProvider>
           <PortProvider>
             <Header />
-            {children}
+              <QualityProvider>
+                {children}
+              </QualityProvider>
             <Footer />
           </PortProvider>
         </ReduxProvider>

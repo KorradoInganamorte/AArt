@@ -1,6 +1,8 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react"
+import dynamic from "next/dynamic"
 
-import VideoListQualitySetting from "./VideoListQualitySetting"
+import { Dispatch, RefObject, SetStateAction, useEffect } from "react"
+
+const VideoListQualitySetting = dynamic(() => import("./VideoListQualitySetting"))
 
 import { robotoMedium } from "@/public/fonts"
 
@@ -19,7 +21,7 @@ type Props = {
   backToSettingsInterface: (set: (value: SetStateAction<boolean>) => void, ref: RefObject<HTMLDivElement>) => void
   }
 
-const VideoQualitySetting = ({ lists, qualityActive, setQualityActive, showQualitySettingsInterface, setShowQualitySettingsInterface, settingsInterfaceRef, qualitySettngsInterfaceRef, backToSettingsInterface }:Props) => {
+const VideoQualitySetting = ({ lists, showQualitySettingsInterface, setShowQualitySettingsInterface, settingsInterfaceRef, qualitySettngsInterfaceRef, backToSettingsInterface }:Props) => {
 
   const handleSubSettingsClickOutside = (e: any) => {
     e.preventDefault()
@@ -45,7 +47,7 @@ const VideoQualitySetting = ({ lists, qualityActive, setQualityActive, showQuali
 
         <div className="w-full h-[.1rem] bg-white mb-[.8rem]"></div>
 
-        <VideoListQualitySetting lists={lists} qualityActive={qualityActive} setQualityActive={setQualityActive} />
+        <VideoListQualitySetting lists={lists} />
     </div>
   )
 }

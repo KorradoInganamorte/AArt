@@ -10,16 +10,18 @@ import Loader from "@/UI/Loader"
 
 import { robotoMedium } from "@/public/fonts"
 import "./videoTool.sass"
+import { useQuality } from "@/context/qualityContext"
 
 type Props = {
   className?: string
   videoRef: RefObject<HTMLVideoElement>
   containerRef: RefObject<HTMLDivElement>
-  setCurrentQuality: Dispatch<SetStateAction<string>>
 }
 
-const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Props) => {
+const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   const pathname = usePathname()
+
+  const { currentQuality, setCurrentQuality } = useQuality()
 
   const [isPlayed, setIsPlayed] = useState<boolean>(true)
   const [isHiddenInterface, setIsHiddenInterface] = useState<boolean>(false)
@@ -232,21 +234,12 @@ const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Pro
     e.preventDefault()
     if (!settingsInterfaceRef.current?.contains(e.target) && !settingsButtonRef.current?.contains(e.target) && !qualitySettngsInterfaceRef.current?.contains(e.target)) {
       setShowSettingsInterface(false)
-      // settingsInterfaceRef.current?.classList.remove("absolute")
-      // settingsInterfaceRef.current?.classList.add("hidden")
     }
   };
 
   const handleVisibleSettingInterface = () => {
     if (settingsInterfaceRef.current) {
       setShowSettingsInterface(!showSettingsInterface)
-      // if (settingsInterfaceRef.current.classList.contains("hidden")) {
-      //   settingsInterfaceRef.current.classList.remove("hidden")
-      //   settingsInterfaceRef.current.classList.add("absolute")
-      // } else if (settingsInterfaceRef.current.classList.contains("absolute")) {
-      //   settingsInterfaceRef.current.classList.remove("absolute")
-      //   settingsInterfaceRef.current.classList.add("hidden")
-      // }
     }
   }
 
@@ -265,6 +258,9 @@ const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Pro
   }
 
   useEffect(() => {
+    const resolution = getFromStorage("quality")
+    resolution && setCurrentQuality(resolution)
+
     // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
     if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
@@ -322,21 +318,20 @@ const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Pro
     if (currentTimeLineRef.current) {
       currentTimeLineRef.current.style.width = `${currentWidth}%`
     }
-  }, [videoRef.current?.currentTime])
+  }, [currentTime])
 
   useEffect(() => {
-    if (videoRef.current) {
-      const currentTime = videoRef.current.currentTime
+    const time = getFromStorage(`${pathname}/currentTime`)
+    const resolution = getFromStorage("quality")
 
-      setToStorage("quality", quality[qualityActive])
-
-      videoRef.current.load()
-      videoRef.current.currentTime = currentTime
-      
-      const resoution = getFromStorage("quality")
-      resoution && setCurrentQuality(resoution)
+    videoRef.current?.load()
+    if (videoRef.current && time) {
+      videoRef.current.currentTime = Number(time)
     }
-  }, [qualityActive])
+    
+    resolution && setCurrentQuality(resolution)
+    // videoRef.current?.play()
+  }, [currentQuality])
 
   return (
     <div ref={videoToolRef} className={`${className} translate-y-[-5.2rem] ${isHiddenInterface ? "opacity-0" : "opacity-100"} ease-in transition-opacity`}>
@@ -345,7 +340,7 @@ const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Pro
       
       <div ref={settingsInterfaceRef} className={`${showSettingsInterface ? "absolute" : "hidden"} right-[.8rem] bottom-[5.2rem] w-[36.2rem] bg-gray-hover-card/80 py-[1rem] rounded-[.5rem]`}>
         <div onClick={() => goToSubSettingsInterface(setShowQualitySettingsInterface, qualitySettngsInterfaceRef)}>
-          <VideoListSetting title="Разрешение" value={`${quality[qualityActive]}p`} />
+          <VideoListSetting title="Разрешение" value={`${currentQuality}p`} />
         </div>
       </div>
 

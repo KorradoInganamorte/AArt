@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { useGetOnesAnimeQuery } from '@/redux/services/anime';
 
 import VideoTool from './VideoTool';
+import { useQuality } from '@/context/qualityContext';
 
 type Props = {
   id: string
@@ -15,7 +16,8 @@ type Props = {
 const VideoPlayer = ({ id, series }: Props) => {
   const { data: anime } = useGetOnesAnimeQuery({ id: id })
 
-  const [currentQuality, setCurrentQuality] = useState<string>("720")
+  // const [currentQuality, setCurrentQuality] = useState<string>("720")
+  const { currentQuality, setCurrentQuality } = useQuality()
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,10 +30,10 @@ const VideoPlayer = ({ id, series }: Props) => {
       </Head>
       <video className='relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`https://storage.yandexcloud.net/aart/${anime ? anime?.data.attributes.url_yandex_object : "evangelion"}/ep${series}.${currentQuality}.mp4`} />
       {videoRef.current && containerRef.current ? (
-        <VideoTool videoRef={videoRef} containerRef={containerRef} setCurrentQuality={setCurrentQuality}></VideoTool>
+        <VideoTool videoRef={videoRef} containerRef={containerRef}></VideoTool>
       ) : (
         // статическая разметка с которой нельзя взаимодействовать пока не загрузится 
-        <VideoTool className='cursor-not-allowed' videoRef={videoRef} containerRef={containerRef} setCurrentQuality={setCurrentQuality}></VideoTool>
+        <VideoTool className='cursor-not-allowed' videoRef={videoRef} containerRef={containerRef}></VideoTool>
       )}
     </div>
   );
