@@ -265,8 +265,6 @@ const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Pro
   }
 
   useEffect(() => {
-    console.log("use effect")
-
     // Если в localStorage есть currentTime, то мы подставляем его
     const storageCurrentTime = getFromStorage(`${pathname}/currentTime`)
     if (storageCurrentTime && storageCurrentTime !== "0" && videoRef.current) {
@@ -329,9 +327,14 @@ const VideoTool = ({ className, videoRef, containerRef, setCurrentQuality }: Pro
   useEffect(() => {
     if (videoRef.current) {
       const currentTime = videoRef.current.currentTime
-      setCurrentQuality(quality[qualityActive])
+
+      setToStorage("quality", quality[qualityActive])
+
       videoRef.current.load()
       videoRef.current.currentTime = currentTime
+      
+      const resoution = getFromStorage("quality")
+      resoution && setCurrentQuality(resoution)
     }
   }, [qualityActive])
 
