@@ -25,7 +25,7 @@ const FilmContent = ({ id, series }: Props) => {
   }
 
   const nextSeriesHandleClick = () => {
-    router.push((series).toString())
+    router.push((Number(series) + 1).toString())
   }
 
   return (

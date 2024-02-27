@@ -2,7 +2,7 @@ import dynamic from "next/dynamic"
 
 import { Dispatch, RefObject, SetStateAction, useEffect } from "react"
 
-const VideoListQualitySetting = dynamic(() => import("./VideoListQualitySetting"))
+const VideoListQualitySetting = dynamic(() => import("@/components/video_player/VideoListQualitySetting"))
 
 import { robotoMedium } from "@/public/fonts"
 

@@ -1,16 +1,17 @@
+import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react"
+import { RefObject, SetStateAction, useEffect, useRef, useState } from "react"
 
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
+import { useQuality } from "@/context/qualityContext"
 
-import VideoListSetting from "./VideoListSetting"
-import VideoQualitySetting from "./VideoQualitySetting"
+const VideoListSetting = dynamic(() => import("@/components/video_player/VideoListSetting"))
+const VideoQualitySetting = dynamic(() => import("@/components/video_player/VideoQualitySetting"))
 
 import Loader from "@/UI/Loader"
 
 import { robotoMedium } from "@/public/fonts"
 import "./videoTool.sass"
-import { useQuality } from "@/context/qualityContext"
 
 type Props = {
   className?: string
@@ -26,6 +27,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   const [isPlayed, setIsPlayed] = useState<boolean>(true)
   const [isHiddenInterface, setIsHiddenInterface] = useState<boolean>(false)
 
+  const [currentVolumeDisabled, setCurrentVolumeDisabled] = useState<boolean>(false);
   const [currentWidth, setCurrentWidth] = useState<string>("0");
   const [currentTime, setCurrentTime] = useState<string>("0:00");
   const [duration, setDuration] = useState<string>("0:00");
@@ -33,6 +35,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   const videoToolRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const iconMessagePlayPause = useRef<HTMLDivElement>(null);
+  const volumeRef = useRef<HTMLInputElement>(null)
   const timeLineRef = useRef<HTMLInputElement>(null)
   const currentTimeLineRef = useRef<HTMLDivElement>(null)
   const showTimeRef = useRef<HTMLDivElement>(null)
@@ -47,11 +50,28 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   const [qualityActive, setQualityActive] = useState<number>(1)
 
   // Изменение громкости видео
-  const handleVolumeChange = (value: number) => {
+  const changeVolume = (value: number) => {
     if (videoRef.current) {
       videoRef.current.volume = value
+      if (volumeRef.current && volumeRef.current.value !== "0") {
+        setCurrentVolumeDisabled(false)
+      } else if (volumeRef.current && volumeRef.current.value === "0") {
+        setCurrentVolumeDisabled(true)
+      }
     }
   };
+
+  const handleVolumeChange = () => {
+    if (volumeRef.current && volumeRef.current.value !== "0") {
+      changeVolume(0)
+      volumeRef.current.value = "0"
+      setCurrentVolumeDisabled(true)
+    } else if (volumeRef.current && volumeRef.current.value === "0") {
+      changeVolume(0.5)
+      volumeRef.current.value = "0.5"
+      setCurrentVolumeDisabled(false)
+    }
+  }
 
   // Изменение состояния просмотра видео (пауза/воспроизвведение)
   const handlePlayPause = () => {
@@ -267,16 +287,13 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
       videoRef.current.currentTime = Number(storageCurrentTime)
     }
 
-    // устанавливаем currentTime сразу при загрузки страницы если оно есть
-    if (videoRef.current) {
-      updateCurrentParams()
-      setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
-    }
-
     // Устанавливаем duration полсе подгрузки метаданных у видео
     videoRef.current?.addEventListener("loadedmetadata", () => {
-      updateCurrentParams()
       setDuration(formatTime(Number(videoRef.current?.duration.toFixed())))
+
+      if (currentTimeLineRef.current) {
+        currentTimeLineRef.current.style.width = `${(Number(videoRef.current?.currentTime) / Number(videoRef.current?.duration) * 100).toString()}%`
+      }
     })
 
     if (videoRef.current) {
@@ -344,7 +361,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
         </div>
       </div>
 
-      <VideoQualitySetting 
+      <VideoQualitySetting
         lists={quality}
         qualityActive={qualityActive}
         setQualityActive={setQualityActive}
@@ -367,11 +384,11 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
       <div className='flex items-center justify-between w-[100%] py-[.4rem] px-[2rem] bg-black/30'>
         
         <div className='flex items-center'>
-          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.6rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
+          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.8rem] h-[1.6rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
           
           <div className='flex items-center ml-[1.6rem] mr-[2.4rem]'>
-            <img className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src="/images/Volume.svg" alt="volume change icon" />
-            <input onChange={(e) => handleVolumeChange(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
+            <img onClick={handleVolumeChange} className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src={currentVolumeDisabled ? "/images/VolumeDisabled.svg" : "/images/Volume.svg"} alt="volume change icon" />
+            <input ref={volumeRef} onChange={(e) => changeVolume(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 
           <p className={`${robotoMedium} text-lg text-white`}>{(duration !== "0:00" && currentTime && !Number.isNaN(duration) && !Number.isNaN(currentTime)) ? `${currentTime} / ${duration}` : `0:00 / 0:00`}</p>

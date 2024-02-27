@@ -1,12 +1,13 @@
 "use client"
 
 import Head from 'next/head';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import { useGetOnesAnimeQuery } from '@/redux/services/anime';
 
-import VideoTool from './VideoTool';
 import { useQuality } from '@/context/qualityContext';
+
+import VideoTool from './VideoTool';
 
 type Props = {
   id: string
@@ -25,8 +26,8 @@ const VideoPlayer = ({ id, series }: Props) => {
   return (
     <div className='w-[100%] h-[82vh] mb-[2rem]' tabIndex={0} ref={containerRef}>
       <Head>
-        <link rel="preload" as="image" href="/images/Play.svg"/>
         <link rel="preload" as="image" href="/images/Pause.svg"/>
+        <link rel="preload" as="image" href="/images/VolumeDisabled.svg"/>
       </Head>
       <video className='relative w-[100%] h-[82vh] bg-black' ref={videoRef} src={`https://storage.yandexcloud.net/aart/${anime ? anime?.data.attributes.url_yandex_object : "evangelion"}/ep${series}.${currentQuality}.mp4`} />
       {videoRef.current && containerRef.current ? (

@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react"
-
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
 import { useQuality } from "@/context/qualityContext"
 
