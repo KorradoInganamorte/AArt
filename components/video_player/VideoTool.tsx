@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { RefObject, SetStateAction, useEffect, useRef, useState } from "react"
 
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
@@ -10,17 +10,22 @@ const VideoQualitySetting = dynamic(() => import("@/components/video_player/Vide
 
 import Loader from "@/UI/Loader"
 
+import { Anime } from "@/types/Anime"
+
 import { robotoMedium } from "@/public/fonts"
 import "./videoTool.sass"
 
 type Props = {
   className?: string
+  series: string
+  anime: Anime | undefined
   videoRef: RefObject<HTMLVideoElement>
   containerRef: RefObject<HTMLDivElement>
 }
 
-const VideoTool = ({ className, videoRef, containerRef }: Props) => {
+const VideoTool = ({ className, series, anime, videoRef, containerRef }: Props) => {
   const pathname = usePathname()
+  const router = useRouter()
 
   const { currentQuality, setCurrentQuality } = useQuality()
 
@@ -34,7 +39,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
 
   const videoToolRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const iconMessagePlayPause = useRef<HTMLDivElement>(null);
+  const iconMessagePlayPause = useRef<HTMLButtonElement>(null);
   const volumeRef = useRef<HTMLInputElement>(null)
   const timeLineRef = useRef<HTMLInputElement>(null)
   const currentTimeLineRef = useRef<HTMLDivElement>(null)
@@ -78,18 +83,23 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
     setIsHiddenInterface(false)
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        iconMessagePlayPause.current?.classList.remove("flex")
-        iconMessagePlayPause.current?.classList.add("hidden")
         setIsPlayed(false)
         videoRef.current.play();
       } else {
-        iconMessagePlayPause.current?.classList.remove("hidden")
-        iconMessagePlayPause.current?.classList.add("flex")
         setIsPlayed(true)
         videoRef.current.pause();
       }
     }
   };
+
+  // Переключение на предыдущую/следующую серию
+  const nextSeriesHandleClick = () => {
+    Number(series) < Number(anime?.data.attributes.series.split(" ")[0]) && router.push((Number(series) + 1).toString())
+  }
+
+  const previousSeriesHandleClick = () => {
+    Number(series) > 1 && router.push((Number(series) - 1).toString())
+  }
 
 // Показ/Скрытие VideoTool
   // MouseLeave
@@ -382,7 +392,7 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
         backToSettingsInterface={backToSettingsInterface} 
       />
       
-      <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>
+      <button onClick={handlePlayPause} ref={iconMessagePlayPause} className={`${isPlayed ? "flex" : "hidden"} absolute top-[-41vh] left-[46vw] items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></button>
       
       <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] mr-[5rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
       
@@ -394,10 +404,12 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
       <div className='flex items-center justify-between w-[100%] py-[.4rem] px-[2rem] bg-black/30 translate-y-[-1rem]'>
         
         <div className='flex items-center'>
-          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[2rem] h-[2rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
+          <button onClick={previousSeriesHandleClick} className="flex items-center justify-center w-[3.2rem] h-[3.4rem] mr-[.4rem]"><img className='w-[2.2rem] h-[2.2rem]' src="/images/PreviousSeriesIcon.svg" alt="previous series button" /></button>
+          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.2rem] h-[3.4rem]"><img className='w-[1.8rem] h-[1.8rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
+          <button onClick={nextSeriesHandleClick} className="flex items-center justify-center w-[3.2rem] h-[3.4rem] mr-[1rem]"><img className='w-[2.2rem] h-[2.2rem]' src="/images/NextSeriesIcon.svg" alt="next series button" /></button>
           
           <div className='flex items-center ml-[1.6rem] mr-[2.4rem]'>
-            <img onClick={handleVolumeChange} className='w-[2.2rem] h-[2rem] mr-[1rem]' src={currentVolumeDisabled ? "/images/VolumeDisabled.svg" : "/images/Volume.svg"} alt="volume change icon" />
+            <img onClick={handleVolumeChange} className="w-[2.2rem] h-[2rem] mr-[1rem] cursor-pointer" src={currentVolumeDisabled ? "/images/VolumeDisabled.svg" : "/images/Volume.svg"} alt="volume change icon" />
             <input ref={volumeRef} onChange={(e) => changeVolume(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 
