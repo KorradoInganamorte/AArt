@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { Dispatch, SetStateAction } from "react"
 
 import { useGetAllAnimeQuery } from "@/redux/services/anime"
 import { usePort } from "@/context/portContext"
@@ -11,11 +12,12 @@ import { robotoMedium } from "@/public/fonts"
 import "./card.sass"
 
 type Props = {
+  showDropdown: boolean
   active: string
   searchQuery: string
 }
 
-const Card = ({ active, searchQuery }: Props) => {
+const Card = ({ showDropdown, active, searchQuery }: Props) => {
   const { PORT } = usePort()
   const { data: animes, isLoading, isSuccess } = useGetAllAnimeQuery({ sort: active })
 
@@ -31,7 +33,7 @@ const Card = ({ active, searchQuery }: Props) => {
         isSuccess ? (
           <>
             {animes.data.length > 0 ? animes?.data.filter(anime => anime.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())).map((anime) => (
-              <Link href={`/about/${anime.id}`} key={anime.id} className={`w-max h-max px-[.8rem] py-[.6rem] pb-[1.8rem] rounded-[.8rem] hover:bg-black hover:translate-y-[-.6rem] cursor-pointer ease-in-out transition-all`}>
+              <Link href={`/about/${anime.id}`} key={anime.id} className={`w-max h-max px-[.8rem] py-[.6rem] pb-[1.8rem] rounded-[.8rem] hover:bg-black ${showDropdown ? "" : "hover:scale-[1.02]"} cursor-pointer ease-in-out transition-all`}>
                 <div className="w-max bg-[#2B2B2B] rounded-[.5rem]">
                   <img className="w-[20.9rem] h-[28.4rem] p-[.4rem] mb-[.8rem] rounded-[.5rem]" src={`${PORT}${anime.attributes.image_webp.data.attributes.url}`} alt="card image" />
                 </div>

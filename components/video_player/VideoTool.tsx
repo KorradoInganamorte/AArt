@@ -119,12 +119,22 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
   // Типизировать нормально event
   const showTimeMouseMove = (e: any) => {
     if(showTimeRef.current && videoRef.current) {
-      const x = e.pageX
-      showTimeRef.current.style.display = "inline-block"
-      showTimeRef.current.style.setProperty("--x", `${x}px`)
-
-      const time = formatTime((e.clientX / e.target.offsetWidth) * videoRef.current.duration + 1)
-      showTimeRef.current.innerHTML = time
+      let x = e.pageX;
+  
+      // Если showTimeRef выходит за пределы страницы, сдвигаем его внутрь
+      if (x + showTimeRef.current.offsetWidth / 2 > window.innerWidth * 0.988) {
+        x -= (x + showTimeRef.current.offsetWidth / 2) - window.innerWidth * 0.988;
+      } else if (x - showTimeRef.current.offsetWidth / 2 < 0) {
+        x += (showTimeRef.current.offsetWidth / 2 - x);
+      }
+  
+      // Остальная логика по позиционированию showTimeRef
+  
+      showTimeRef.current.style.display = "inline-block";
+      showTimeRef.current.style.left = `${x}px`;
+  
+      const time = formatTime((e.clientX / e.target.offsetWidth) * videoRef.current.duration + 1) 
+      showTimeRef.current.innerHTML = time;
     }
   }
 
@@ -374,20 +384,20 @@ const VideoTool = ({ className, videoRef, containerRef }: Props) => {
       
       <div ref={iconMessagePlayPause} className={`absolute top-[-41vh] left-[46vw] hidden items-center justify-center w-[8.4rem] h-[8.4rem] bg-gray/60 rounded-[50%]`}><img className={"w-[3.2rem] h-[3.2rem] translate-x-[.4rem]"} src={"/images/Play.svg"} alt="play/pause message icon" /></div>
       
-      <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
+      <div ref={showTimeRef} className={`showTime hidden absolute bg-gray/80 py-[.4rem] px-[1rem] mr-[5rem] rounded-[.5rem] ${robotoMedium} text-lg text-white translate-y-[-2.5rem]`}>0:00</div>
       
-      <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMoveThrottle} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='flex flex-wrap items-end w-[100%] h-[1rem] cursor-pointer' >
-        <div ref={currentTimeLineRef} className="w-[0%] h-[.3rem] bg-red translate-y-[.5rem] pointer-events-none"></div>
-        <div className="w-[100%] h-[.3rem] bg-gray pointer-events-none"></div>
+      <div onMouseLeave={hideTimeMouseMove} onMouseMove={showTimeMouseMoveThrottle} onClick={changeCurrentTimeRewind} ref={timeLineRef} className='relative z-[2] flex flex-wrap items-end w-[100%] h-[2rem] cursor-pointer' >
+        <div ref={currentTimeLineRef} className="w-[0%] h-[.3rem] bg-red z-[2] pointer-events-none"></div>
+        <div className="w-[100%] h-[.3rem] bg-gray translate-y-[-1rem] pointer-events-none"></div>
       </div>
 
-      <div className='flex items-center justify-between w-[100%] py-[.4rem] px-[2rem] bg-black/30'>
+      <div className='flex items-center justify-between w-[100%] py-[.4rem] px-[2rem] bg-black/30 translate-y-[-1rem]'>
         
         <div className='flex items-center'>
-          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[1.8rem] h-[1.6rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
+          <button onClick={handlePlayPause} className="flex items-center justify-center w-[3.4rem] h-[3.4rem]"><img className='w-[2rem] h-[2rem]' src={isPlayed ? "/images/Play.svg" : "/images/Pause.svg"} alt="play/pause button" /></button>
           
           <div className='flex items-center ml-[1.6rem] mr-[2.4rem]'>
-            <img onClick={handleVolumeChange} className='w-[1.8rem] h-[1.6rem] mr-[1rem]' src={currentVolumeDisabled ? "/images/VolumeDisabled.svg" : "/images/Volume.svg"} alt="volume change icon" />
+            <img onClick={handleVolumeChange} className='w-[2.2rem] h-[2rem] mr-[1rem]' src={currentVolumeDisabled ? "/images/VolumeDisabled.svg" : "/images/Volume.svg"} alt="volume change icon" />
             <input ref={volumeRef} onChange={(e) => changeVolume(parseFloat(e.target.value))} className='w-[5.8rem] h-[.1rem] bg-white cursor-pointer' type="range" min={0} max={1} step={0.1}/>
           </div>
 

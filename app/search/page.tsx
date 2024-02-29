@@ -10,6 +10,7 @@ const SearchFilmBar = dynamic(() => import("@/components/film/SearchFilmBar"))
 import "./index.sass"
 
 const Page = () => {
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [isActive, setIsActive] = useState<number>(0)
   const lists = ["Все", "В тренде", "Новые", "Классические"]
@@ -20,7 +21,7 @@ const Page = () => {
     <div className="container_page">
 
       <div className="absolute translate-x-[50%] translate-y-[-5.8rem] w-[60rem]">
-        <SearchFilmBar setSearchQuery={setSearchQuery} />
+        <SearchFilmBar showDropdown={showDropdown} setShowDropdown={setShowDropdown} setSearchQuery={setSearchQuery} />
       </div>
 
       <div className="mb-[1rem] mt-[1.6rem]">
@@ -28,7 +29,7 @@ const Page = () => {
       </div>
 
       <div className="film-layout">
-        <Card active={active} searchQuery={searchQuery} />
+        <Card showDropdown={showDropdown} active={active} searchQuery={searchQuery} />
       </div>
       
     </div>
