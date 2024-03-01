@@ -28,7 +28,7 @@ const FilmAboutBlock = ({ id }: Props) => {
              <div className="px-[2rem] mb-[5.4rem]">
                 <div className="flex">
                     <div className="flex flex-col w-[35.2rem] mr-[2.4rem]">
-                        <img className="w-[35.2rem] h-[47.8rem] rounded-[.5rem] mb-[1.6rem]" src={`${PORT}${anime?.data.attributes.image_webp3x.data.attributes.url}`} alt="film image" />
+                        <img className="w-[35.2rem] h-[47.8rem] rounded-[.5rem] mb-[1.6rem]" src={`${PORT}${anime?.data.attributes.image_webp.data.attributes.url}`} alt="film image" />
                         <Link href={`/watch/${id}/1`} className={`flex justify-center items-center bg-white py-[1rem] mb-[2rem] rounded-[.5rem] ${robotoMedium} text-3xl text-black group`}>Смотреть<img className="w-[1rem] ml-[3.8rem] group-hover:translate-x-[1.2rem] transition-transform" src="/images/ArrowNext.svg" alt="watch now icon" /></Link>
                         <div className={`flex gap-x-[3.2rem] ${robotoMedium} text-3xl text-white`}>
                             {anime && <RatingFilmAboutBlock rating={anime.data.attributes.rating} />}

@@ -51,7 +51,7 @@ const VideoTool = ({ className, series, anime, videoRef, containerRef }: Props) 
   const [showSettingsInterface, setShowSettingsInterface] = useState<boolean>(false)
   const [showQualitySettingsInterface, setShowQualitySettingsInterface] = useState<boolean>(false)
 
-  const quality = ["1080", "720", "480", "360"]
+  const quality = ["1080", "720", "360"]
   const [qualityActive, setQualityActive] = useState<number>(1)
 
   // Изменение громкости видео

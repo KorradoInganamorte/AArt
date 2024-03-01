@@ -18,7 +18,6 @@ export interface Data {
         acters: Acters[]
         rating: Ratings[]
         image_webp: Media
-        image_webp3x: Media
         url_yandex_object: string
     }
 }

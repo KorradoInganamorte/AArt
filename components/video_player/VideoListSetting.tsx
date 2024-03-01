@@ -1,6 +1,4 @@
-import { RefObject, SetStateAction } from "react"
-
-import { poppinsMedium, robotoBold, robotoMedium } from "@/public/fonts"
+import { poppinsMedium, robotoBold } from "@/public/fonts"
 
 type Props = {
     title: string
