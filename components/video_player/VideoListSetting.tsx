@@ -1,6 +1,6 @@
 import { RefObject, SetStateAction } from "react"
 
-import { robotoBold, robotoMedium } from "@/public/fonts"
+import { poppinsMedium, robotoBold, robotoMedium } from "@/public/fonts"
 
 type Props = {
     title: string
@@ -16,7 +16,7 @@ const VideoListSetting = ({ title, value }: Props) => {
         </div>
 
         <div className="flex items-center">
-            <p className={`${robotoMedium} text-base text-white mr-[1.2rem]`}>{value}</p>
+            <p className={`${poppinsMedium} text-base text-white mr-[1.2rem]`}>{value}</p>
             <img className="w-[.8rem] h-[1.3rem]" src="/images/ArrowNextWhite.svg" alt="arrow next" />
         </div>
     </div>

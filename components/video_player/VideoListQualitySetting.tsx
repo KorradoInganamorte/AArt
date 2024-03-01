@@ -1,7 +1,7 @@
 import { getFromStorage, setToStorage } from "@/lib/localStorage"
 import { useQuality } from "@/context/qualityContext"
 
-import { robotoMedium } from "@/public/fonts"
+import { poppinsMedium } from "@/public/fonts"
 
 type Props = {
   lists: string[]
@@ -26,7 +26,7 @@ const VideoListQualitySetting = ({ lists }: Props) => {
           ) : (
             <div className="mr-[3rem]"></div>
           )}
-          <p className={`${robotoMedium} text-lg text-white`}>{`${list}p`}</p>
+          <p className={`${poppinsMedium} text-lg text-white`}>{`${list}p`}</p>
         </div>
       ))}
     </>
