@@ -30,6 +30,7 @@ export default {
       black: "#000000",
       "dark-gray": "#0F0F0F",
       gray: "#343434",
+      "gray-faq": "#1E1E1E",
       "gray-search_dropdown": "#1C1C1C",
       "gray-hover-filter_btn": "#585858",
       "gray-placeholder": "#A5A5A5",
