@@ -11,7 +11,7 @@ type Props = {
 
 const CardFAQ = ({ image, title, description, time }: Props) => {
   return (
-    <div className="flex flex-col justify-between w-[35.6rem] bg-gray-faq px-[1.8rem] py-[1.6rem] mr-[2.4rem] last:mr-0 rounded-[1rem] text-white">
+    <div className="flex flex-col justify-between w-[35.6rem] bg-gray-faq hover:bg-gray-hover-card ease-in transition-all px-[1.8rem] py-[1.6rem] mr-[2.4rem] last:mr-0 rounded-[1rem] text-white">
         <div>
             <div className="flex mb-[2rem]">
                 <img className="w-max h-[3.2rem] mr-[2.8rem]" src={`/images/${image}.svg`} alt="varning icon" />
