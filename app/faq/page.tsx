@@ -1,10 +1,11 @@
-import { robotoMedium } from "@/public/fonts"
 import Link from "next/link"
+
+import { robotoMedium } from "@/public/fonts"
 
 const Page = () => {
   return (
     <>
-        <div className="container_page min-h-[74.3vh]">
+        <div className="container_page h-[100vh]">
             <p className={`${robotoMedium} text-2xl text-white mt-[2.8rem] mb-[1.6rem]`}>Пользователям:</p>
             <section>
                 <p className="text-2xl text-white mb-[1.2rem]">- Если вы хотите добавить своё любимое аниме на наш сайт, пишите в telegram нашему разработчику -  <Link className="text-blue" href={"https://t.me/authorDEV"}>Telegram</Link></p>

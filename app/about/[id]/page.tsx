@@ -1,8 +1,5 @@
-import dynamic from "next/dynamic"
-
-const VideoPlayer = dynamic(() => import("@/components/video_player/VideoPlayer"))
-// const Fragment = dynamic(() => import("@/UI/Fragment"))
-const FilmAboutBlock = dynamic(() => import("@/components/film/FilmAboutBlock"))
+import VideoPlayer from "@/components/video_player/VideoPlayer"
+import FilmAboutBlock from "@/components/film/FilmAboutBlock"
 
 import { robotoMedium } from "@/public/fonts"
 import "./index.sass"
