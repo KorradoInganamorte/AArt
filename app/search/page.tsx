@@ -3,11 +3,10 @@
 import dynamic from "next/dynamic"
 import { useState } from "react"
 
-const FilterBtn = dynamic(() => import("@/UI/button/FilterBtn"))
-const Card = dynamic(() => import("@/components/card/Card"))
-const SearchFilmBar = dynamic(() => import("@/components/film/SearchFilmBar"))
+import Card from "@/components/card/Card"
 
-import "./index.sass"
+const FilterBtn = dynamic(() => import("@/UI/button/FilterBtn"))
+const SearchFilmBar = dynamic(() => import("@/components/film/SearchFilmBar"))
 
 const Page = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -28,9 +27,7 @@ const Page = () => {
         <FilterBtn lists={lists} isActive={isActive} setIsActive={setIsActive} />
       </div>
 
-      <div className="film-layout">
-        <Card showDropdown={showDropdown} active={active} searchQuery={searchQuery} />
-      </div>
+      <Card showDropdown={showDropdown} active={active} searchQuery={searchQuery} />
       
     </div>
   )

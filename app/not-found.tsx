@@ -1,4 +1,6 @@
-import { poppinsMedium } from "@/public/fonts"
+import Link from "next/link"
+
+import { poppinsMedium, robotoMedium } from "@/public/fonts"
 
 const NotFound = () => {
   return (
@@ -16,11 +18,13 @@ const NotFound = () => {
         <div className="w-[12rem] h-[.1rem] bg-gray mx-[1.4rem]"></div>
       </div>
 
-      <div className="flex">
+      <div className="flex mb-[3.6rem]">
         <p>THIS PAGE WAS <span className="text-red">NOT</span> FOUND</p>
         <div className="h-[5.8rem] w-[.1rem] bg-gray mx-[1.4rem]"></div>
         <p>THIS PAGE WAS NOT <span className="text-red">FOUND</span></p>
       </div>
+
+      <Link href="/" className={`bg-red/70 hover:bg-red px-[7.8rem] py-[.4rem] rounded-[.5rem] ${robotoMedium} text-black text-5xl ease-in transition-colors bg-no-repeat bg-[length:1.6rem_1.8rem] bg-[top_.4rem_right_.4rem] bg-[url('/images/TopRightArrow.svg')]`}>На главную</Link>
 
     </div>
   )

@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { Dispatch, SetStateAction } from "react"
 
 import { useGetAllAnimeQuery } from "@/redux/services/anime"
 import { usePort } from "@/context/portContext"
@@ -22,7 +21,7 @@ const Card = ({ showDropdown, active, searchQuery }: Props) => {
   const { data: animes, isLoading, isSuccess } = useGetAllAnimeQuery({ sort: active })
 
   return (
-    <>
+    <div className="film-layout">
       {isLoading ? (
       <>
         {Array.from({ length: 10 }).map((_, i) => (
@@ -46,14 +45,14 @@ const Card = ({ showDropdown, active, searchQuery }: Props) => {
             )}
           </>
         ) : (
-        <>
-          {animes?.data.map((_, i) => (
+          <>
+          {Array.from({ length: 10 }).map((_, i) => (
             <Skeleton key={i} />
           ))}
         </>
         )
       )}
-    </>
+    </div>
   )
 }
 
