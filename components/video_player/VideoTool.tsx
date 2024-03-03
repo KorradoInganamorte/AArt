@@ -8,7 +8,7 @@ import { useQuality } from "@/context/qualityContext"
 const VideoListSetting = dynamic(() => import("@/components/video_player/VideoListSetting"))
 const VideoQualitySetting = dynamic(() => import("@/components/video_player/VideoQualitySetting"))
 
-import Loader from "@/UI/Loader"
+import Loader from "@/UI/loader/Loader"
 
 import { Anime } from "@/types/Anime"
 

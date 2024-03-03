@@ -7,7 +7,6 @@ import "./index.sass"
 const Page = ({ params }: { params: { id: string } }) => {
 
   return (
-    <div className="container_page">
         <div className="gradient pt-[1.6rem] mt-[1.2rem] rounded-[.5rem]">
             <FilmAboutBlock id={params.id} />
 
@@ -16,7 +15,6 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <VideoPlayer id={params.id} series={"0"} />
             </div>
         </div>
-    </div>
   )
 }
 
