@@ -19,7 +19,7 @@ const FilmOfTheYear = () => {
             <SkeletonFilmOfTheYear />
         ) : isSuccess ? (
             <>
-                <img className="h-[90vh] w-[100%] mx-auto bg-black" src={`${PORT}${anime?.data.attributes.img.data.attributes.url}`} alt="background anime image" />
+                <img className="h-[90vh] w-[100%] mx-auto bg-black" src={`${PORT}${anime?.data.attributes.img.data.attributes.url}`} alt="anime of the year image" />
                 <div className="gradient-img absolute left-0  h-[100%] bg-black/80 pl-[5rem] pr-[25rem] text-white">
                     <h1 className={`${robotoMedium} text-7xl mt-[5.5rem] mb-[3.5rem]`}>Аниме года - <span className="text-8xl">{anime?.data.attributes.title}</span></h1>
                     <p className={"max-w-[56.5rem] text-2xl mb-[2rem]"}>{anime?.data.attributes.description}</p>

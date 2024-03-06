@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { Dispatch, SetStateAction, useEffect, useRef } from "react"
+import { Dispatch, SetStateAction } from "react"
 
 import { usePort } from "@/context/portContext"
 import { useGetAllAnimeQuery } from "@/redux/services/anime"
@@ -18,20 +18,12 @@ const CardScrollY = ({ isActive, setIsActive }: Props) => {
   const { PORT } = usePort()
   const { data: animes, isLoading, isSuccess } = useGetAllAnimeQuery({ sort: "Классические" })
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const handleClick = (i: number) => {
     setIsActive(i)
   }
-
-  useEffect(() => {
-    if (containerRef.current) {
-        containerRef.current.scrollLeft = (containerRef.current.scrollWidth - containerRef.current.clientWidth) / 2
-    }
-  }, []);
   
   return (
-    <div ref={containerRef} className="flex items-end overflow-x-scroll">
+    <div className="flex items-end overflow-x-scroll">
       {isLoading ? (
       Array.from({ length: 7 }).map((_, i) => (
         <SkeletonScrollY key={i} />

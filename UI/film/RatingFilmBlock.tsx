@@ -17,7 +17,7 @@ const RatingFilmBlock = ({ rating }: Props) => {
       </div>
       <div>
         {rating.map((item, i) => (
-          <p key={i} className="text-4xl mb-0">{item.rating} <span className="text-xl">из {item.of}</span></p>
+          <p key={i} className="text-4xl">{item.rating} <span className="text-xl">из {item.of}</span></p>
         ))}
       </div>
     </div>

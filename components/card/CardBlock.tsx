@@ -10,7 +10,7 @@ const CardBlock = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center mb-[2.4rem]">
+      <div className="mb-[2.4rem]">
         <CardScrollY id={isActive} isActive={isActive} setIsActive={setIsActive} />
       </div>
 
