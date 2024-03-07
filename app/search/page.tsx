@@ -3,7 +3,8 @@
 import dynamic from "next/dynamic"
 import { useState } from "react"
 
-const Card = dynamic(() => import("@/components/card/Card"))
+import Card from "@/components/card/Card"
+
 const FilterBtn = dynamic(() => import("@/UI/button/FilterBtn"))
 const SearchFilmBar = dynamic(() => import("@/components/film/SearchFilmBar"))
 

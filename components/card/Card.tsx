@@ -39,7 +39,7 @@ const Card = ({ showDropdown, active, searchQuery }: Props) => {
                 <h2 className={`max-w-[20.9rem] ${robotoMedium} text-3xl text-white`}>{anime.attributes.title}</h2>
               </Link>
             )) : (
-              <div className="absolute w-[96vw] h-[60vh] mx-auto flex items-center justify-center bg-dark-gray">
+              <div className=" w-[96vw] h-[100vh] mx-auto flex items-center justify-center bg-dark-gray">
                 <p className={`${robotoMedium} text-5xl text-white`}>В этой категории ничего не найдено</p>
               </div>
             )}
