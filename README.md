@@ -1,4 +1,4 @@
 # AArt
-Онлайн кинотеатр для просмотра ваших любимых аниме
+An online cinema for watching your favorite anime
 
 ![Logotype](./docs/wall.jpg)
